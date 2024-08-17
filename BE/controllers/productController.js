@@ -7,7 +7,7 @@ const Category = require('../models/Category');
 // Tạo mới Product
 exports.createProduct = async (req, res) => {
     try {
-      const { name, price, status, brand, category, description, images } = req.body;
+      const { name, price, status, brand, category, description, images, quantity } = req.body;
         
       const brandExists = await Brand.findById(brand);
       const categoryExists = await Category.findById(category);
@@ -25,6 +25,7 @@ exports.createProduct = async (req, res) => {
         category,
         description,
         images,
+        quantity,
       });
   
       await product.save();
@@ -64,7 +65,7 @@ exports.getProductById = async (req, res) => {
 // Cập nhật Product
 exports.updateProduct = async (req, res) => {
   try {
-    const { name, price, status, brand, category, description, images } = req.body;
+    const { name, price, status, brand, category, description, images, quantity } = req.body;
 
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -79,6 +80,7 @@ exports.updateProduct = async (req, res) => {
     product.category = category || product.category;
     product.description = description || product.description;
     product.images = images || product.images;
+    product.quantity = quantity !== undefined ? quantity : product.quantity;
 
     await product.save();
     res.json({ msg: 'Product updated successfully', product });
