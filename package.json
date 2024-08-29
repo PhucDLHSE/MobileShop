@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start-backend": "nodemon BE/app.js",
+    "start-frontend": "http-server fe -p 8080",
+    "open-browser": "start http://localhost:8080",
+    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\" \"npm run open-browser\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "opn-cli": "^5.0.0"
+  }
+}

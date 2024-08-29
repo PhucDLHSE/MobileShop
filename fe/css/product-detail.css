@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px; /* Tăng chiều rộng container để có không gian cho carousel */
+}
+
+h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.product-info .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.product-info .info-row strong {
+    min-width: 150px;
+}
+
+.product-description {
+    margin-top: 20px;
+}
+
+.product-description p {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+}
+
+/* CSS cho Carousel */
+.carousel {
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    overflow: hidden;
+    margin-bottom: 20px;
+    width: 100%; /* Đặt chiều rộng carousel tự động theo hình ảnh */
+    height: auto; /* Chiều cao tự động dựa trên hình ảnh */
+    display: flex; /* Đảm bảo các mục con bên trong được căn giữa */
+    justify-content: center;
+}
+
+.carousel-item img {
+    border-radius: 10px;
+    width: 100%; /* Chiều rộng hình ảnh bằng 100% carousel */
+    height: auto; /* Chiều cao tự động, để hình ảnh không bị méo */
+    object-fit: contain; /* Đảm bảo hình ảnh vừa vặn với khung chứa mà không bị cắt */
+    display: block; /* Hiển thị block để không dư thừa */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #007bff; /* Màu nền cho biểu tượng mũi tên */
+    border-radius: 50%; /* Mũi tên bo tròn */
+    padding: 10px; /* Tăng kích thước mũi tên */
+}
+
+.divider {
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

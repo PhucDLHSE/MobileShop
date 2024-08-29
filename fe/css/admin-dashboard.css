@@ -1,0 +1,65 @@
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+#wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    transition: margin 0.25s ease-out;
+    background-color: #f8f9fa; /* Thay đổi màu nền */
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+    color: #343a40; /* Màu chữ */
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#sidebar-wrapper .list-group-item {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    color: #343a40; /* Màu chữ */
+    background-color: #f8f9fa; /* Màu nền */
+    border: none; /* Không có đường viền */
+}
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+    font-weight: bold;
+}
+
+#sidebar-wrapper .list-group-item.active {
+    background-color: #e9ecef;
+    color: #007bff;
+    font-weight: bold;
+    border-left: 3px solid #007bff; /* Thêm đường viền bên trái */
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding: 20px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+.card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}

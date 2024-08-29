@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <h2>Chào mừng bạn đã trở lại !</h2>
+    <div class="container" id="container">
+        <!-- Form đăng ký (Register) -->
+        <div class="form-container sign-up-container">
+            <form id="registerForm">
+                <h1>Tạo tài khoản</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>hoặc sử dụng Email của bạn để đăng ký</span>
+                <input type="text" placeholder="Họ Tên" id="fullName" required />
+                <input type="text" placeholder="Số điện thoại" id="phoneNumber" required />
+                <input type="date" placeholder="Ngày sinh" id="dateOfBirth" required />
+                <input type="email" placeholder="Email" id="regEmail" required />
+                <input type="password" placeholder="Mật khẩu" id="regPassword" required />
+                <input type="password" placeholder="Nhập lại mật khẩu" id="repeatPassword" required />
+                <button type="submit">Đăng ký</button>
+            </form>
+        </div>
+
+        <!-- Form đăng nhập (Login) -->
+        <div class="form-container sign-in-container">
+            <form id="loginForm">
+                <h1>Đăng nhập</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>hoặc sử dụng tài khoản của bạn</span>
+                <input type="email" placeholder="Email" id="email" required />
+                <input type="password" placeholder="Mật khẩu" id="password" required />
+                <a href="#">Quên mật khẩu?</a>
+                <button type="submit">Đăng nhập</button>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Chào mừng trở lại!</h1>
+                    <p>Để giữ kết nối với chúng tôi, vui lòng đăng nhập bằng tài khoản của bạn</p>
+                    <button class="ghost" id="signIn">Đăng nhập</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Xin chào !</h1>
+                    <p>Hãy nhập thông tin của bạn để cùng khám phá những điều mới mẻ.</p>
+                    <button class="ghost" id="signUp">Đăng ký</button>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Logic cho đăng nhập
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+    
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert('Đăng nhập thành công!');
+            
+            // Lưu token và fullName vào localStorage
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('fullName', data.fullName);
+
+            // Điều hướng dựa trên vai trò của người dùng
+            if (data.role === 'Admin') {
+                window.location.href = '/admin-dashboard.html';
+            } else if (data.role === 'Member') {
+                window.location.href = '/homepage.html'; // Điều hướng đến trang homepage
+            } else {
+                alert('Role không xác định');
+            }
+        } else {
+            const errorData = await response.json();
+            alert('Đăng nhập thất bại: ' + errorData.msg);
+        }
+    } catch (error) {
+        alert('Có lỗi xảy ra, vui lòng thử lại sau!');
+        console.error('Error:', error);
+    }
+});
+
+
+
+        // Logic cho đăng ký
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const repeatPassword = document.getElementById('repeatPassword').value;
+
+            if (password !== repeatPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ fullName, phoneNumber, dateOfBirth, email, password })
+                });
+
+                if (response.ok) {
+                    alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                    document.getElementById('signIn').click();  // Chuyển sang form đăng nhập
+                } else {
+                    const errorData = await response.json();
+                    alert('Đăng ký thất bại: ' + errorData.msg);
+                }
+            } catch (error) {
+                alert('Có lỗi xảy ra, vui lòng thử lại sau!');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
