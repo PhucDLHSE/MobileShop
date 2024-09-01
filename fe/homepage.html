@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +7,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
     <div class="top-bar bg-primary text-white py-1">
         <div class="container d-flex justify-content-between">
@@ -34,19 +33,15 @@
                     <img src="logo.png" alt="Logo">
                 </div>
                 <div class="dropdown mx-2">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Danh mục
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Điện thoại</a></li>
-                        <li><a class="dropdown-item" href="#">Laptop</a></li>
-                        <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="categoryMenu">
+                        <!-- Categories will be dynamically inserted here -->
                     </ul>
                 </div>
                 <div class="location-dropdown mx-2">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="locationDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="locationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Xem giá tại Hồ Chí Minh
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="locationDropdown">
@@ -61,110 +56,135 @@
             </div>
 
             <div class="contact-info d-flex align-items-center">
-                <!-- Thay đổi phần "Đăng nhập" -->
-                <a href="#" id="account-link" class="text-white mx-2"><i class="fas fa-user"></i> Hi, (fullName)</a>
+                <a href="#" class="text-white mx-2"><i class="fas fa-phone-alt"></i> Gọi mua hàng 1800.2097</a>
+                <a href="#" class="text-white mx-2"><i class="fas fa-map-marker-alt"></i> Cửa hàng gần bạn</a>
+                <a href="#" class="text-white mx-2"><i class="fas fa-truck"></i> Tra cứu đơn hàng</a>
+                <button class="btn text-white mx-2" id="cartButton"><i class="fas fa-shopping-cart"></i> Giỏ hàng</button>
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <a href="#" id="account-link" class="text-white mx-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i> Hi, <span id="userFullName"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end profile-dropdown-content" aria-labelledby="account-link">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Left Dropend Menu -->
     <div class="container-fluid mt-3 d-flex">
-        <div class="left-menu col-lg-2 col-md-3 col-sm-4">
-            <div class="btn-group-vertical w-100" role="group">
-                <div class="btn-group dropend">
-                    <button type="button" class="btn btn-light dropdown-toggle w-100" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Điện thoại, Tablet
-                    </button>
-                    <ul class="dropdown-menu">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6>Hãng điện thoại</h6>
-                                <a class="dropdown-item" href="#">iPhone</a>
-                                <a class="dropdown-item" href="#">Samsung</a>
-                                <a class="dropdown-item" href="#">Xiaomi</a>
-                                <a class="dropdown-item" href="#">OPPO</a>
-                            </div>
-                            <div class="col-md-3">
-                                <h6>Mức giá điện thoại</h6>
-                                <a class="dropdown-item" href="#">Dưới 2 triệu</a>
-                                <a class="dropdown-item" href="#">Từ 2 - 4 triệu</a>
-                                <a class="dropdown-item" href="#">Từ 4 - 7 triệu</a>
-                            </div>
-                            <div class="col-md-3">
-                                <h6>Điện thoại HOT</h6>
-                                <a class="dropdown-item" href="#">iPhone 15 Pro Max</a>
-                                <a class="dropdown-item" href="#">Galaxy Z Fold6</a>
-                                <a class="dropdown-item" href="#">Galaxy Z Flip6</a>
-                            </div>
-                            <div class="col-md-3">
-                                <h6>Hãng máy tính bảng</h6>
-                                <a class="dropdown-item" href="#">iPad</a>
-                                <a class="dropdown-item" href="#">Samsung</a>
-                                <a class="dropdown-item" href="#">Xiaomi</a>
-                            </div>
+        <div class="content-wrapper d-flex flex-row w-100">
+            <div class="left-menu">
+                <div class="btn-group-vertical w-100" role="group">
+                    <div class="btn-group dropend">
+                        <button type="button" class="btn btn-light dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
+                            Điện thoại, Tablet
+                        </button>
+                        <ul class="dropdown-menu" id="categorySidebar">
+                            <!-- Categories will be dynamically inserted here -->
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-light w-100">Laptop</button>
+                    <button type="button" class="btn btn-light w-100">Âm thanh</button>
+                    <button type="button" class="btn btn-light w-100">Đồng hồ, Camera</button>
+                    <button type="button" class="btn btn-light w-100">Đồ gia dụng</button>
+                    <button type="button" class="btn btn-light w-100">Phụ kiện</button>
+                    <button type="button" class="btn btn-light w-100">PC, Màn hình, Máy in</button>
+                    <button type="button" class="btn btn-light w-100">Tivi</button>
+                    <button type="button" class="btn btn-light w-100">Thu cũ đổi mới</button>
+                    <button type="button" class="btn btn-light w-100">Hàng cũ</button>
+                    <button type="button" class="btn btn-light w-100">Khuyến mãi</button>
+                    <button type="button" class="btn btn-light w-100">Tin công nghệ</button>
+                </div>
+            </div>
+
+            <!-- Center Carousel -->
+            <div class="center-carousel">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/nang-cap-ipone-performance-15-8.webp" class="d-block w-100" alt="...">
                         </div>
-                    </ul>
+                        <div class="carousel-item">
+                            <img src="images/samsung-fold6-km-moi-24-8-2024.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/vivo-v30e-home-thang8.webp" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <button type="button" class="btn btn-light w-100">Laptop</button>
-                <button type="button" class="btn btn-light w-100">Âm thanh</button>
-                <button type="button" class="btn btn-light w-100">Đồng hồ, Camera</button>
-                <button type="button" class="btn btn-light w-100">Đồ gia dụng</button>
-                <button type="button" class="btn btn-light w-100">Phụ kiện</button>
-                <button type="button" class="btn btn-light w-100">PC, Màn hình, Máy in</button>
-                <button type="button" class="btn btn-light w-100">Tivi</button>
-                <button type="button" class="btn btn-light w-100">Thu cũ đổi mới</button>
-                <button type="button" class="btn btn-light w-100">Hàng cũ</button>
-                <button type="button" class="btn btn-light w-100">Khuyến mãi</button>
-                <button type="button" class="btn btn-light w-100">Tin công nghệ</button>
+                <div class="additional-images">
+                    <div class="top-image mt-2">
+                        <img src="images/1200x150-1199x150-1.png" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="bottom-image mt-2">
+                        <img src="images/b2s-update-19-06 (1).gif" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Images -->
+            <div class="right-images">
+                <div class="mb-2">
+                    <img src="images/m55-cate-gia-hotsale-moi-10990.webp" class="img-fluid" alt="...">
+                </div>
+                <div class="mb-2">
+                    <img src="images/right-banner-macbook-cto-09-08-new-new.webp" class="img-fluid" alt="...">
+                </div>
+                <div class="mb-2">
+                    <img src="images/b2s-2024-right-banner-laptop.webp" class="img-fluid" alt="...">
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Center Carousel -->
-        <div class="center-carousel col-lg-7 col-md-6 col-sm-8">
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="images/nang-cap-ipone-performance-15-8.webp" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/samsung-fold6-km-moi-24-8-2024.webp" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/vivo-v30e-home-thang8.webp" class="d-block w-100" alt="...">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+    <!-- Sản phẩm mới về -->
+    <div class="container mt-5">
+        <h2 class="text-center font-weight-bold">Sản phẩm mới về</h2>
+        <div class="row justify-content-center" id="product-list">
+            <!-- Products will be dynamically inserted here -->
         </div>
+    </div>
 
-        <!-- Right Images -->
-        <div class="right-images col-lg-3 col-md-3 col-sm-4">
-            <div class="mb-2">
-                <img src="images/m55-cate-gia-hotsale-moi-10990.webp" class="img-fluid" alt="...">
-            </div>
-            <div class="mb-2">
-                <img src="images/b2s-2024-right-banner-laptop.webp" class="img-fluid" alt="...">
-            </div>
-            <div>
-                <img src="images/right-banner-macbook-cto-09-08-new-new.webp" class="img-fluid" alt="...">
+    <!-- Category-wise Product Sections -->
+    <div class="container mt-5" id="category-products">
+        <!-- Category sections will be dynamically inserted here -->
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Giỏ hàng của bạn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems">
+                        <!-- Cart items will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Thanh toán</button>
+                </div>
             </div>
         </div>
     </div>
@@ -179,12 +199,208 @@
 
     <!-- Custom Script to Replace (fullName) -->
     <script>
-        // Giả sử fullName được lưu trong localStorage sau khi đăng nhập
-        const fullName = localStorage.getItem('fullName') || 'User'; // Thay 'User' bằng giá trị mặc định nếu không có dữ liệu
+        // Assume fullName is stored in localStorage after login
+        const fullName = localStorage.getItem('fullName') || 'User';
 
-        // Cập nhật nội dung trong nút Đăng nhập
-        document.getElementById('account-link').textContent = `Hi, ${fullName}`;
+        // Update the content inside the login link
+        document.getElementById('userFullName').textContent = fullName;
+
+        // Add logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('fullName');
+            window.location.href = 'login.html';
+        });
+    </script>
+
+    <!-- Script for Fetching and Displaying Products -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchProducts();
+            fetchCategories();
+        });
+
+        function fetchProducts() {
+            fetch('http://localhost:5000/api/products', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                }
+            })
+            .then(response => response.json())
+            .then(products => {
+                const productList = document.getElementById('product-list');
+                productList.innerHTML = '';
+
+                products.forEach(product => {
+                    const productCard = `
+                    <div class="col-md-2 mb-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-details/${product._id}'">
+                                <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text product-price">${product.price}đ</p>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity('${product._id}')">-</button>
+                                    <input type="number" class="form-control mx-2 text-center" id="quantity-${product._id}" value="1" min="1" style="width: 50px;">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity('${product._id}')">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    productList.insertAdjacentHTML('beforeend', productCard);
+                });
+            })
+            .catch(error => console.error('Error fetching products:', error));
+        }
+
+        function fetchCategories() {
+            fetch('http://localhost:5000/api/categories', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                }
+            })
+            .then(response => response.json())
+            .then(categories => {
+                const categoryMenu = document.getElementById('categoryMenu');
+                const categorySidebar = document.getElementById('categorySidebar');
+                const categoryProducts = document.getElementById('category-products');
+                categoryMenu.innerHTML = '';
+                categorySidebar.innerHTML = '';
+                categoryProducts.innerHTML = '';
+
+                categories.forEach(category => {
+                    // Thêm danh mục vào dropdown và sidebar
+                    const categoryItem = `<li><a class="dropdown-item" href="#">${category.name}</a></li>`;
+                    categoryMenu.insertAdjacentHTML('beforeend', categoryItem);
+                    categorySidebar.insertAdjacentHTML('beforeend', categoryItem);
+
+                    // Fetch sản phẩm cho từng danh mục
+                    fetch(`http://localhost:5000/api/products/category/${category._id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-auth-token': localStorage.getItem('authToken')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(products => {
+                        if (products.length > 0) {
+                            const categorySection = `
+                            <div class="category-section">
+                                <h3>${category.name}</h3>
+                                <div class="row">
+                                    ${products.map(product => `
+                                        <div class="col-md-2 mb-4">
+                                            <div class="card h-100">
+                                                <div class="position-relative">
+                                                    <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-details/${product._id}'">
+                                                    <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${product.name}</h5>
+                                                    <p class="card-text product-price">${product.price}đ</p>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity('${product._id}')">-</button>
+                                                        <input type="number" class="form-control mx-2 text-center" id="quantity-${product._id}" value="1" min="1" style="width: 50px;">
+                                                        <button class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity('${product._id}')">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>`;
+                            categoryProducts.insertAdjacentHTML('beforeend', categorySection);
+                        }
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+        }
+
+        function addToCart(productId) {
+            const quantity = document.getElementById(`quantity-${productId}`).value;
+            fetch('http://localhost:5000/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify({ productId, quantity: parseInt(quantity) })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg === "Product added to cart") {
+                    alert('Product added to cart successfully!');
+                } else {
+                    alert('Failed to add product to cart.');
+                }
+            })
+            .catch(error => console.error('Error adding product to cart:', error));
+        }
+
+        function incrementQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        }
+
+        function decrementQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            if (quantityInput.value > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        }
+
+        // Update cart modal with cart items
+        function updateCartModal() {
+    fetch('http://localhost:5000/api/cart', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': localStorage.getItem('authToken')
+        }
+    })
+    .then(response => response.json())
+    .then(cart => {
+        const cartItems = document.getElementById('cartItems');
+        cartItems.innerHTML = '';
+
+        if (cart.products && cart.products.length > 0) {
+            cart.products.forEach(item => {
+                const cartItem = `
+                <div class="cart-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="${item.product.images && item.product.images.length > 0 ? item.product.images[0] : ''}" alt="${item.product.name}" width="50">
+                        <span>${item.product.name}</span>
+                    </div>
+                    <div>
+                        <span>${item.quantity} x ${item.product.price}đ</span>
+                    </div>
+                </div>`;
+                cartItems.insertAdjacentHTML('beforeend', cartItem);
+            });
+        } else {
+            cartItems.innerHTML = '<p>Giỏ hàng của bạn đang trống.</p>';
+        }
+    })
+    .catch(error => console.error('Error fetching cart:', error));
+}
+
+
+        // Show cart modal when clicking on the cart button
+        document.getElementById('cartButton').addEventListener('click', (event) => {
+            event.preventDefault();  // Prevent the default action
+            updateCartModal();
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        });
     </script>
 </body>
-
 </html>

@@ -2,40 +2,36 @@ const Product = require('../models/Product');
 const Brand = require('../models/Brand');
 const Category = require('../models/Category');
 
-
-
 // Tạo mới Product
 exports.createProduct = async (req, res) => {
-    try {
-      const { name, price, status, brand, category, description, images, quantity } = req.body;
-        
-      const brandExists = await Brand.findById(brand);
-      const categoryExists = await Category.findById(category);
-  
-      if (!brandExists || !categoryExists) {
-        return res.status(400).json({ msg: 'Brand or Category not found' });
-      }
+  try {
+    const { name, price, status, brand, category, description, images, quantity } = req.body;
+      
+    const brandExists = await Brand.findById(brand);
+    const categoryExists = await Category.findById(category);
 
-      // Không thực hiện chuyển đổi price thành Number ở đây
-      const product = new Product({
-        name,
-        price, // Đảm bảo price vẫn là chuỗi
-        status,
-        brand,
-        category,
-        description,
-        images,
-        quantity,
-      });
-  
-      await product.save();
-      res.status(201).json({ msg: 'Product created successfully', product });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
+    if (!brandExists || !categoryExists) {
+      return res.status(400).json({ msg: 'Brand or Category not found' });
     }
-  };
-  
+
+    const product = new Product({
+      name,
+      price,
+      status,
+      brand,
+      category,
+      description,
+      images,
+      quantity,
+    });
+
+    await product.save();
+    res.status(201).json({ msg: 'Product created successfully', product });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
 
 // Lấy tất cả Products
 exports.getProducts = async (req, res) => {
@@ -100,6 +96,28 @@ exports.deleteProduct = async (req, res) => {
     }
 
     res.json({ msg: 'Product removed successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Lấy sản phẩm theo Category
+exports.getProductsByCategory = async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.params.categoryId }).populate('brand category');
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Lấy sản phẩm theo Brand
+exports.getProductsByBrand = async (req, res) => {
+  try {
+    const products = await Product.find({ brand: req.params.brandId }).populate('brand category');
+    res.json(products);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

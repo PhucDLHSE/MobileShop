@@ -19,4 +19,10 @@ router.put('/:id', auth, adminAuth, productController.updateProduct);
 // Xóa Product
 router.delete('/:id', auth, adminAuth, productController.deleteProduct);
 
+// Lấy sản phẩm theo Category
+router.get('/category/:categoryId', productController.getProductsByCategory);
+
+// Lấy sản phẩm theo Brand
+router.get('/brand/:brand', productController.getProductsByBrand);
+
 module.exports = router;

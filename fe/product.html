@@ -216,8 +216,9 @@
                     
                     // Add a click event listener to redirect to product details page
                     row.addEventListener("click", () => {
-                        window.location.href = `http://localhost:5000/product-details/${product._id}`;
+                        window.location.href = `/product-details/${product._id}`;
                     });
+
 
                     row.innerHTML = `
                         <td>${product._id}</td>
