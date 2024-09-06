@@ -221,43 +221,43 @@
         });
 
         function fetchProducts() {
-            fetch('http://localhost:5000/api/products', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': localStorage.getItem('authToken')
-                }
-            })
-            .then(response => response.json())
-            .then(products => {
-                const productList = document.getElementById('product-list');
-                productList.innerHTML = '';
-
-                products.forEach(product => {
-                    const productCard = `
-                    <div class="col-md-2 mb-4">
-                        <div class="card h-100">
-                            <div class="position-relative">
-                                <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-details/${product._id}'">
-                                <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
-                                <p class="card-text product-price">${product.price}đ</p>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity('${product._id}')">-</button>
-                                    <input type="number" class="form-control mx-2 text-center" id="quantity-${product._id}" value="1" min="1" style="width: 50px;">
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity('${product._id}')">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                    productList.insertAdjacentHTML('beforeend', productCard);
-                });
-            })
-            .catch(error => console.error('Error fetching products:', error));
+    fetch('http://localhost:5000/api/products', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': localStorage.getItem('authToken')
         }
+    })
+    .then(response => response.json())
+    .then(products => {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = '';
 
+        products.forEach(product => {
+            const productCard = `
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="position-relative">
+                        <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-dt/${product._id}'">
+                        <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text product-price">${product.price}đ</p>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity('${product._id}')">-</button>
+                            <input type="number" class="form-control mx-2 text-center" id="quantity-${product._id}" value="1" min="1" style="width: 50px;">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity('${product._id}')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            productList.insertAdjacentHTML('beforeend', productCard);
+        });
+    })
+    .catch(error => console.error('Error fetching products:', error));
+}
+    
         function fetchCategories() {
             fetch('http://localhost:5000/api/categories', {
                 method: 'GET',
@@ -300,7 +300,7 @@
                                         <div class="col-md-2 mb-4">
                                             <div class="card h-100">
                                                 <div class="position-relative">
-                                                    <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-details/${product._id}'">
+                                                    <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-dt/${product._id}'">
                                                     <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
                                                 </div>
                                                 <div class="card-body">
@@ -338,9 +338,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.msg === "Product added to cart") {
-                    alert('Product added to cart successfully!');
+                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
                 } else {
-                    alert('Failed to add product to cart.');
+                    alert('Thêm sản phẩm vào giỏ hàng thất bại.');
                 }
             })
             .catch(error => console.error('Error adding product to cart:', error));
@@ -370,28 +370,68 @@
     .then(response => response.json())
     .then(cart => {
         const cartItems = document.getElementById('cartItems');
-        cartItems.innerHTML = '';
+        cartItems.innerHTML = '';  // Clear previous content
+        let totalAmount = 0;
 
         if (cart.products && cart.products.length > 0) {
             cart.products.forEach(item => {
-                const cartItem = `
-                <div class="cart-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <img src="${item.product.images && item.product.images.length > 0 ? item.product.images[0] : ''}" alt="${item.product.name}" width="50">
-                        <span>${item.product.name}</span>
-                    </div>
-                    <div>
-                        <span>${item.quantity} x ${item.product.price}đ</span>
-                    </div>
-                </div>`;
-                cartItems.insertAdjacentHTML('beforeend', cartItem);
+                if (item.product && item.product.price) {
+                    const priceString = item.product.price.replace(/,/g, '');
+                    const price = parseInt(priceString, 10);
+                    const totalForItem = price * item.quantity;
+                    totalAmount += totalForItem;
+
+                    const cartItem = `
+                    <div class="cart-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <img src="${item.product.images && item.product.images.length > 0 ? item.product.images[0] : ''}" alt="${item.product.name}" width="50">
+                            <span>${item.product.name}</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span>${item.quantity} x ${item.product.price}đ</span>
+                            <button class="btn btn-danger btn-sm ms-2" onclick="removeFromCart('${item.product._id}')">X</button>
+                        </div>
+                    </div>`;
+                    cartItems.insertAdjacentHTML('beforeend', cartItem);
+                }
             });
+
+            // Add the "Total" line with a new CSS class
+            const totalItem = `
+            <div class="cart-total d-flex justify-content-between align-items-center mt-3">
+                <strong>Tổng cộng:</strong>
+                <span id="cartTotal">${totalAmount.toLocaleString('vi-VN')}đ</span>
+            </div>`;
+            cartItems.insertAdjacentHTML('beforeend', totalItem);
+
         } else {
             cartItems.innerHTML = '<p>Giỏ hàng của bạn đang trống.</p>';
         }
     })
     .catch(error => console.error('Error fetching cart:', error));
 }
+
+function removeFromCart(productId) {
+    fetch('http://localhost:5000/api/cart/remove', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({ productId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.msg === "Product removed from cart") {
+            alert('Sản phẩm đã được xóa khỏi giỏ hàng!');
+            updateCartModal();  // Refresh the cart modal
+        } else {
+            alert('Không thể xóa sản phẩm khỏi giỏ hàng.');
+        }
+    })
+    .catch(error => console.error('Error removing product from cart:', error));
+}
+
 
 
         // Show cart modal when clicking on the cart button

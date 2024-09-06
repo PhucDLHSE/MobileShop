@@ -2,7 +2,6 @@ const Cart = require('../models/Cart');
 const Product = require('../models/Product');
 
 // Thêm sản phẩm vào giỏ hàng
-// Thêm sản phẩm vào giỏ hàng
 exports.addProductToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -77,11 +76,18 @@ exports.viewCart = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const cart = await Cart.findOne({ user: userId }).populate('products.product', 'name price'); // Populates only name and price fields
+    // Tìm giỏ hàng của người dùng và populate các trường cần thiết từ sản phẩm
+    const cart = await Cart.findOne({ user: userId }).populate('products.product', 'name price images');
 
     if (!cart) {
       return res.status(400).json({ msg: 'Cart is empty' });
     }
+
+    // Lọc các sản phẩm có giá trị null
+    cart.products = cart.products.filter(item => item.product !== null);
+
+    // Lưu lại các thay đổi trong giỏ hàng nếu có bất kỳ sản phẩm null nào bị loại bỏ
+    await cart.save();
 
     res.status(200).json(cart);
   } catch (err) {
@@ -89,5 +95,6 @@ exports.viewCart = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 

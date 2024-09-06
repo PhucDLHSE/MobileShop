@@ -38,6 +38,11 @@ app.get('/product-details/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/product-details.html'));
 });
 
+app.get('/product-dt/:id', (req, res) => {
+    const productId = req.params.id;
+    res.sendFile(path.join(__dirname, '../fe/product-dt.html'));
+});
+
 
 
 
