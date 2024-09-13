@@ -8,6 +8,7 @@ const brandRoutes = require('./routes/brand');
 const productRoutes = require('./routes/product');
 const cartRoutes = require('./routes/cart');
 const addressRoutes = require('./routes/address');
+const userRoutes = require('./routes/user');
 
 dotenv.config();
 connectDB();
@@ -43,7 +44,8 @@ app.get('/product-dt/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/product-dt.html'));
 });
 
-
+// Kết nối routes cho user
+app.use('/api/users', userRoutes);
 
 
 //Cors
