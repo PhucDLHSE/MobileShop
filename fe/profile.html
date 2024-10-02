@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <ul class="list-group">
                     <li class="list-group-item active" id="profile-section-link">Thông tin cá nhân</li>
-                    <li class="list-group-item" id="orders-section-link">Xem đơn hàng</li>
+                    <li class="list-group-item" id="address-section-link">Quản lý địa chỉ</li>
                     <li class="list-group-item" id="password-section-link">Đổi mật khẩu</li>
                 </ul>
             </div>
@@ -30,32 +30,44 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                            <input type="email" class="form-control" id="email" placeholder="Nhập email" readonly>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại</label>
                             <input type="text" class="form-control" id="phone" placeholder="Nhập số điện thoại">
                         </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Ngày sinh</label>
+                            <input type="date" class="form-control" id="dateOfBirth" placeholder="Nhập ngày sinh">
+                        </div>
                         <button type="submit" class="btn btn-primary mt-3">Cập nhật</button>
                     </form>
                 </div>
 
-                <!-- Xem đơn hàng -->
-                <div id="orders-section" class="profile-section d-none">
-                    <h3>Đơn hàng của bạn</h3>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Mã đơn hàng</th>
-                                <th>Ngày</th>
-                                <th>Trạng thái</th>
-                                <th>Tổng tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderList">
-                            <!-- Các đơn hàng sẽ được hiển thị tại đây -->
-                        </tbody>
-                    </table>
+                <!-- Quản lý địa chỉ -->
+                <div id="address-section" class="profile-section d-none">
+                    <h3>Địa chỉ của bạn</h3>
+                    <ul id="addressList" class="list-group mb-4">
+                        <!-- Địa chỉ sẽ được hiển thị tại đây -->
+                    </ul>
+                    <button class="btn btn-primary" id="addAddressBtn">Thêm địa chỉ mới</button>
+
+                    <!-- Form thêm địa chỉ mới -->
+                    <form id="addressForm" class="mt-3 d-none">
+                        <div class="form-group">
+                            <label for="addressName">Tên người nhận</label>
+                            <input type="text" class="form-control" id="addressName" placeholder="Nhập tên">
+                        </div>
+                        <div class="form-group">
+                            <label for="addressDetail">Địa chỉ</label>
+                            <input type="text" class="form-control" id="addressDetail" placeholder="Nhập địa chỉ">
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isDefault">
+                            <label class="form-check-label" for="isDefault">Đặt làm địa chỉ mặc định</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Lưu địa chỉ</button>
+                    </form>
                 </div>
 
                 <!-- Đổi mật khẩu -->
@@ -83,27 +95,26 @@
     <script>
         // Logic to toggle between different sections
         document.getElementById('profile-section-link').addEventListener('click', function() {
-            document.getElementById('profile-section').classList.remove('d-none');
-            document.getElementById('orders-section').classList.add('d-none');
-            document.getElementById('password-section').classList.add('d-none');
+            showSection('profile-section');
         });
 
-        document.getElementById('orders-section-link').addEventListener('click', function() {
-            document.getElementById('profile-section').classList.add('d-none');
-            document.getElementById('orders-section').classList.remove('d-none');
-            document.getElementById('password-section').classList.add('d-none');
-            fetchOrders(); // Fetch orders when this section is shown
+        document.getElementById('address-section-link').addEventListener('click', function() {
+            showSection('address-section');
+            fetchAddresses(); // Fetch addresses when this section is shown
         });
 
         document.getElementById('password-section-link').addEventListener('click', function() {
-            document.getElementById('profile-section').classList.add('d-none');
-            document.getElementById('orders-section').classList.add('d-none');
-            document.getElementById('password-section').classList.remove('d-none');
+            showSection('password-section');
         });
 
-        // Example: Fetching orders data
-        function fetchOrders() {
-            fetch('http://localhost:5000/api/orders', {
+        function showSection(sectionId) {
+            document.querySelectorAll('.profile-section').forEach(section => section.classList.add('d-none'));
+            document.getElementById(sectionId).classList.remove('d-none');
+        }
+
+        //THÔNG TIN NGƯỜI DÙNG
+        function fetchUserInfo() {
+            fetch('http://localhost:5000/api/users/me', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -111,37 +122,55 @@
                 }
             })
             .then(response => response.json())
-            .then(orders => {
-                const orderList = document.getElementById('orderList');
-                orderList.innerHTML = '';
-                orders.forEach(order => {
-                    const orderRow = `
-                        <tr>
-                            <td>${order._id}</td>
-                            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
-                            <td>${order.status}</td>
-                            <td>${order.totalPrice}đ</td>
-                        </tr>`;
-                    orderList.insertAdjacentHTML('beforeend', orderRow);
-                });
+            .then(data => {
+                document.getElementById('fullName').value = data.user.fullName;
+                document.getElementById('email').value = data.user.email;
+                document.getElementById('phone').value = data.user.phoneNumber;
+                document.getElementById('dateOfBirth').value = new Date(data.user.dateOfBirth).toISOString().split('T')[0];  // Định dạng ngày
             })
-            .catch(error => console.error('Error fetching orders:', error));
+            .catch(error => console.error('Error fetching profile:', error));
         }
 
-        // Update user information
+        // ĐỊA CHỈ
+        function fetchAddresses() {
+            fetch('http://localhost:5000/api/users/me', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const addressList = document.getElementById('addressList');
+                addressList.innerHTML = '';
+                data.addresses.forEach(address => {
+                    addressList.innerHTML += `
+                        <li class="list-group-item">
+                            ${address.name}: ${address.address}
+                            ${address.isDefault ? '<strong>(Mặc định)</strong>' : ''}
+                            <button class="btn btn-sm btn-warning float-end" onclick="editAddress('${address._id}')">Chỉnh sửa</button>
+                        </li>
+                    `;
+                });
+            })
+            .catch(error => console.error('Error fetching addresses:', error));
+        }
+
+        // CẬP NHẬT THÔNG TIN CÁ NHÂN
         document.getElementById('userInfoForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
 
-            fetch('http://localhost:5000/api/user/update', {
+            fetch('http://localhost:5000/api/users/me', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-auth-token': localStorage.getItem('authToken')
                 },
-                body: JSON.stringify({ fullName, email, phone })
+                body: JSON.stringify({ fullName, phone, dateOfBirth })
             })
             .then(response => response.json())
             .then(data => {
@@ -150,13 +179,13 @@
             .catch(error => console.error('Error updating profile:', error));
         });
 
-        // Change password
+        // Handle password change
         document.getElementById('passwordChangeForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const oldPassword = document.getElementById('oldPassword').value;
             const newPassword = document.getElementById('newPassword').value;
 
-            fetch('http://localhost:5000/api/user/change-password', {
+            fetch('http://localhost:5000/api/users/change-password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -170,6 +199,36 @@
             })
             .catch(error => console.error('Error changing password:', error));
         });
+
+        // Handle address form visibility and submission
+        document.getElementById('addAddressBtn').addEventListener('click', function() {
+            document.getElementById('addressForm').classList.toggle('d-none');
+        });
+
+        document.getElementById('addressForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('addressName').value;
+            const address = document.getElementById('addressDetail').value;
+            const isDefault = document.getElementById('isDefault').checked;
+
+            fetch('http://localhost:5000/api/addresses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                },
+                body: JSON.stringify({ name, address, isDefault })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Địa chỉ mới đã được thêm!');
+                fetchAddresses(); // Refresh address list
+            })
+            .catch(error => console.error('Error adding address:', error));
+        });
+
+        // Fetch user info on page load
+        fetchUserInfo();
     </script>
 </body>
 </html>
