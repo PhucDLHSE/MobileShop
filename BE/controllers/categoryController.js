@@ -80,6 +80,28 @@ exports.deleteCategory = async (req, res) => {
       console.error(err.message);
       res.status(500).send('Server error');
     }
-  };
-  
+};
+
+// Lấy tất cả Categories công khai
+exports.getPublicCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Lấy sản phẩm công khai theo Category
+exports.getPublicProductsByCategory = async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.params.categoryId }).populate('brand category');
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
   

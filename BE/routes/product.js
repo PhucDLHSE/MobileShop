@@ -4,25 +4,20 @@ const productController = require('../controllers/productController');
 const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
 
-// Tạo mới Product
+// Route công khai để lấy tất cả sản phẩm
+router.get('/public', productController.getPublicProducts);
+
+// Route công khai để lấy sản phẩm theo Category
+router.get('/public/category/:categoryId', productController.getPublicProductsByCategory);
+
+// Route công khai để tìm kiếm sản phẩm
+router.get('/search', productController.searchPublicProducts);
+
+// Các route yêu cầu xác thực vẫn giữ nguyên
 router.post('/', auth, adminAuth, productController.createProduct);
-
-// Lấy tất cả Products
 router.get('/', auth, productController.getProducts);
-
-// Lấy một Product theo ID
 router.get('/:id', auth, productController.getProductById);
-
-// Cập nhật Product
 router.put('/:id', auth, adminAuth, productController.updateProduct);
-
-// Xóa Product
 router.delete('/:id', auth, adminAuth, productController.deleteProduct);
-
-// Lấy sản phẩm theo Category
-router.get('/category/:categoryId', productController.getProductsByCategory);
-
-// Lấy sản phẩm theo Brand
-router.get('/brand/:brand', productController.getProductsByBrand);
 
 module.exports = router;

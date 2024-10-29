@@ -8,7 +8,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -38,10 +39,8 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Danh mục
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Điện thoại</a></li>
-                        <li><a class="dropdown-item" href="#">Laptop</a></li>
-                        <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="categoryMenu">
+                        <!-- Các danh mục sẽ được tải động từ API -->
                     </ul>
                 </div>
                 <div class="location-dropdown mx-2">
@@ -55,10 +54,13 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="search-bar mx-2 flex-grow-1">
+            
+            <div class="search-bar mx-2 flex-grow-1 position-relative">
                 <input type="text" class="form-control" placeholder="Bạn cần tìm gì?">
-            </div>
+                <ul class="dropdown-menu" id="search-dropdown" style="position: absolute; top: 100%; transform: translateX(-50%); left: 50%; display: none; z-index: 1050;">
+                    <!-- Kết quả tìm kiếm sẽ được thêm vào đây -->
+                </ul>
+            </div>        
 
             <div class="contact-info d-flex align-items-center">
                 <a href="#" class="text-white mx-2"><i class="fas fa-phone-alt"></i> Gọi mua hàng 1800.2097</a>
@@ -69,7 +71,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Left Dropend Menu -->
     <div class="container-fluid mt-3 d-flex">
         <div class="content-wrapper d-flex flex-row w-100">
@@ -80,34 +82,8 @@
                             aria-expanded="false">
                             Điện thoại, Tablet
                         </button>
-                        <ul class="dropdown-menu">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <h6>Hãng điện thoại</h6>
-                                    <a class="dropdown-item" href="#">iPhone</a>
-                                    <a class="dropdown-item" href="#">Samsung</a>
-                                    <a class="dropdown-item" href="#">Xiaomi</a>
-                                    <a class="dropdown-item" href="#">OPPO</a>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Mức giá điện thoại</h6>
-                                    <a class="dropdown-item" href="#">Dưới 2 triệu</a>
-                                    <a class="dropdown-item" href="#">Từ 2 - 4 triệu</a>
-                                    <a class="dropdown-item" href="#">Từ 4 - 7 triệu</a>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Điện thoại HOT</h6>
-                                    <a class="dropdown-item" href="#">iPhone 15 Pro Max</a>
-                                    <a class="dropdown-item" href="#">Galaxy Z Fold6</a>
-                                    <a class="dropdown-item" href="#">Galaxy Z Flip6</a>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Hãng máy tính bảng</h6>
-                                    <a class="dropdown-item" href="#">iPad</a>
-                                    <a class="dropdown-item" href="#">Samsung</a>
-                                    <a class="dropdown-item" href="#">Xiaomi</a>
-                                </div>
-                            </div>
+                        <ul class="dropdown-menu" id="categorySidebar">
+                            <!-- Các danh mục sẽ được tải động từ API -->
                         </ul>
                     </div>
                     <button type="button" class="btn btn-light w-100">Laptop</button>
@@ -178,9 +154,21 @@
                 <div class="mb-2">
                     <img src="images/b2s-2024-right-banner-laptop.webp" class="img-fluid" alt="...">
                 </div>
-                
             </div>
         </div>
+    </div>
+
+    <!-- Sản phẩm mới về -->
+    <div class="container mt-5">
+        <h2 class="text-center font-weight-bold">Sản phẩm mới về</h2>
+        <div class="row justify-content-center" id="product-list">
+            <!-- Sản phẩm sẽ được tải động từ API -->
+        </div>
+    </div>
+
+    <!-- Category-wise Product Sections -->
+    <div class="container mt-5" id="category-products">
+        <!-- Các sản phẩm theo danh mục sẽ được tải động từ API -->
     </div>
 
     <!-- jQuery -->
@@ -190,6 +178,177 @@
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchProducts();
+            fetchCategories();
+        });
+        function fetchProducts() {
+    fetch('http://localhost:5000/api/products/public', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(products => {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = '';
+
+        const sortedProducts = products.sort((a, b) => {
+            return parseInt(b._id.substring(0, 8), 16) - parseInt(a._id.substring(0, 8), 16);
+        });
+
+        const recentProducts = sortedProducts.slice(0, 12);
+
+        recentProducts.forEach(product => {
+            const productCard = `
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="position-relative">
+                        <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="showLoginAlert()">
+                        <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text product-price">${product.price}đ</p>
+                    </div>
+                </div>
+            </div>`;
+            productList.insertAdjacentHTML('beforeend', productCard);
+        });
+    })
+    .catch(error => console.error('Error fetching products:', error));
+}
+
+// Hàm hiển thị thông báo yêu cầu đăng nhập
+function showLoginAlert() {
+    alert('Vui lòng đăng nhập để xem chi tiết sản phẩm.');
+}
+        function fetchCategories() {
+            fetch('http://localhost:5000/api/categories/public', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(categories => {
+                const categoryMenu = document.getElementById('categoryMenu');
+                const categorySidebar = document.getElementById('categorySidebar');
+                const categoryProducts = document.getElementById('category-products');
+                categoryMenu.innerHTML = '';
+                categorySidebar.innerHTML = '';
+                categoryProducts.innerHTML = '';
+
+                categories.forEach(category => {
+                    // Thêm danh mục vào dropdown và sidebar
+                    const categoryItem = `<li><a class="dropdown-item" href="#">${category.name}</a></li>`;
+                    categoryMenu.insertAdjacentHTML('beforeend', categoryItem);
+                    categorySidebar.insertAdjacentHTML('beforeend', categoryItem);
+
+                    // Fetch sản phẩm cho từng danh mục
+                    fetch(`http://localhost:5000/api/products/public/category/${category._id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(products => {
+                        if (products.length > 0) {
+                            const categorySection = `
+                            <div class="category-section">
+                                <h3>${category.name}</h3>
+                                <div class="row">
+                                    ${products.map(product => `
+                                        <div class="col-md-2 mb-4">
+                                            <div class="card h-100">
+                                                <div class="position-relative">
+                                                    <img src="${product.images[0]}" class="card-img-top" alt="${product.name}" onclick="window.location.href='/product-dt/${product._id}'">
+                                                    <i class="fas fa-cart-plus position-absolute top-0 end-0 m-2" style="cursor:pointer;" onclick="addToCart('${product._id}')"></i>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${product.name}</h5>
+                                                    <p class="card-text product-price">${product.price}đ</p>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity('${product._id}')">-</button>
+                                                        <input type="number" class="form-control mx-2 text-center" id="quantity-${product._id}" value="1" min="1" style="width: 50px;">
+                                                        <button class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity('${product._id}')">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>`;
+                            categoryProducts.insertAdjacentHTML('beforeend', categorySection);
+                        }
+                    });
+                });
+            })
+            .catch(error => console.error('Lỗi tải danh mục:', error));
+        }
+
+        document.querySelector('.search-bar input').addEventListener('input', function(event) {
+    const keyword = this.value.trim();
+    if (keyword) {
+        searchProducts(keyword);
+    } else {
+        hideSearchDropdown(); 
+    }
+});
+
+// Hàm tìm kiếm sản phẩm và hiển thị kết quả dưới dạng dropdown
+function searchProducts(keyword) {
+    fetch(`http://localhost:5000/api/products/search?keyword=${encodeURIComponent(keyword)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(products => {
+        const searchDropdown = document.getElementById('search-dropdown');
+        searchDropdown.innerHTML = ''; // Xóa kết quả hiện tại
+
+        if (products.length === 0) {
+            searchDropdown.innerHTML = '<li class="dropdown-item">Không tìm thấy sản phẩm nào.</li>';
+            searchDropdown.style.display = 'block';
+            return;
+        }
+
+        // Hiển thị kết quả sản phẩm dạng dropdown
+        products.forEach(product => {
+            const productItem = `
+            <li class="dropdown-item" onclick="showLoginAlert()">
+                <img src="${product.images[0]}" alt="${product.name}" style="width: 30px; height: 30px; margin-right: 10px;">
+                ${product.name} - ${product.price}đ
+            </li>`;
+            searchDropdown.insertAdjacentHTML('beforeend', productItem);
+        });
+
+        searchDropdown.style.display = 'block';
+    })
+    .catch(error => console.error('Error searching products:', error));
+}
+
+// Hàm ẩn dropdown tìm kiếm
+function hideSearchDropdown() {
+    const searchDropdown = document.getElementById('search-dropdown');
+    searchDropdown.style.display = 'none';
+}
+
+document.addEventListener('click', function(event) {
+    const searchDropdown = document.getElementById('search-dropdown');
+    if (!searchDropdown.contains(event.target) && !event.target.matches('.search-bar input')) {
+        hideSearchDropdown();
+    }
+});
+
+    </script>
 </body>
 
 </html>

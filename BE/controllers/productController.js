@@ -33,7 +33,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Lấy tất cả Products
+// Lấy tất cả Products (Yêu cầu xác thực)
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find().populate('brand category');
@@ -44,7 +44,18 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// Lấy một Product theo ID
+// Lấy tất cả Products (Công khai)
+exports.getPublicProducts = async (req, res) => {
+  try {
+    const products = await Product.find().populate('brand category');
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Lấy một Product theo ID (Yêu cầu xác thực)
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('brand category');
@@ -57,6 +68,18 @@ exports.getProductById = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+// Lấy sản phẩm theo Category (Công khai)
+exports.getPublicProductsByCategory = async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.params.categoryId }).populate('brand category');
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
 
 // Cập nhật Product
 exports.updateProduct = async (req, res) => {
@@ -102,10 +125,17 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Lấy sản phẩm theo Category
-exports.getProductsByCategory = async (req, res) => {
+// Tìm kiếm sản phẩm công khai
+exports.searchPublicProducts = async (req, res) => {
   try {
-    const products = await Product.find({ category: req.params.categoryId }).populate('brand category');
+    const keyword = req.query.keyword ? {
+      name: {
+        $regex: req.query.keyword,
+        $options: 'i'  // 'i' để không phân biệt chữ hoa và chữ thường
+      }
+    } : {};
+
+    const products = await Product.find({ ...keyword }).populate('brand category');
     res.json(products);
   } catch (err) {
     console.error(err.message);
@@ -113,13 +143,3 @@ exports.getProductsByCategory = async (req, res) => {
   }
 };
 
-// Lấy sản phẩm theo Brand
-exports.getProductsByBrand = async (req, res) => {
-  try {
-    const products = await Product.find({ brand: req.params.brandId }).populate('brand category');
-    res.json(products);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
