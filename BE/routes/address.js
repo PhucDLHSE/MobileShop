@@ -12,6 +12,8 @@ router.get('/', auth, addressController.getAddresses);
 // Xóa Address
 router.delete('/:id', auth, addressController.deleteAddress);
 
+//Cập nhật địa chỉ Mặc định
+router.put('/:id/set-default', auth, addressController.setDefaultAddress);
 
 
 module.exports = router;
