@@ -16,15 +16,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    max-width: 1200px; /* Fixed width for the content area */
-    margin: 0 auto; /* Center the content area */
+    max-width: 1200px; 
+    margin: 0 auto; 
 }
 
 .left-menu, .center-carousel, .right-images {
     padding: 10px;
-    background-color: white; /* Ensure background color is white */
+    background-color: white; 
     border-radius: 5px;
-    flex: 1; /* Ensure equal space distribution */
+    flex: 1; 
 }
 
 .left-menu {
@@ -33,7 +33,7 @@ body {
 
 .center-carousel {
     margin-right: 10px;
-    flex: 2; /* Give more space to the carousel */
+    flex: 2; 
 }
 
 .right-images {
@@ -84,7 +84,6 @@ body {
     text-decoration: none;
 }
 
-/* Dropdown menu styling */
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -133,30 +132,30 @@ body {
     position: relative;
     text-align: center;
     border: none;
-    height: 100%; /* Ensure cards have the same height */
+    height: 100%; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for emphasis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     margin-bottom: 20px;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Slight hover effect */
+    transform: translateY(-5px); 
 }
 
 .card img {
     height: 200px;
     object-fit: cover;
     width: 100%;
-    border-bottom: 1px solid #ddd; /* Add a separator */
+    border-bottom: 1px solid #ddd; 
     border-radius: 5px 5px 0 0;
 }
 
 .card-body {
     padding: 15px;
-    flex-grow: 1; /* Make the body grow to fill the space */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -181,8 +180,8 @@ body {
 .product-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Align items to the left */
-    gap: 20px; /* Add spacing between cards */
+    justify-content: flex-start; 
+    gap: 20px; 
 }
 
 .category-section {
@@ -197,25 +196,24 @@ body {
     text-transform: uppercase;
 }
 
-/* Dropdown for user profile */
 .profile-dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    width: 120px; /* Thu nhỏ chiều rộng */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Giảm độ lớn của shadow */
+    width: 120px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
     z-index: 1;
     border-radius: 5px;
     right: 0;
-    padding: 5px; /* Giảm padding */
+    padding: 5px; 
 }
 
 .profile-dropdown-content a {
     color: #333;
-    padding: 6px 8px; /* Giảm padding */
+    padding: 6px 8px; 
     text-decoration: none;
     display: block;
-    font-size: 12px; /* Giảm kích thước font chữ */
+    font-size: 12px; 
 }
 
 .profile-dropdown-content a:hover {
@@ -230,9 +228,9 @@ body {
     background-color: #3e8e41;
 }
 
-/* Tăng kích thước của modal */
+/* Kích thước của modal */
 .modal-dialog {
-    max-width: 750px; /* Tăng chiều rộng của modal */
+    max-width: 750px; 
 }
 
 .modal-header {
@@ -242,8 +240,8 @@ body {
 
 .modal-body {
     padding: 20px;
-    max-height: 5000px; /* Tăng chiều cao của nội dung */
-    overflow-y: auto;  /* Thêm thanh cuộn nếu nội dung quá dài */
+    max-height: 5000px; 
+    overflow-y: auto;  
 }
 
 .cart-item {

@@ -36,9 +36,7 @@
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Danh mục
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="categoryMenu">
-                        <!-- Categories will be dynamically inserted here -->
-                    </ul>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="categoryMenu"></ul>
                 </div>
                 <div class="location-dropdown mx-2">
                     <button class="btn btn-light dropdown-toggle" type="button" id="locationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,9 +51,8 @@
 
             <div class="search-bar mx-2 flex-grow-1 position-relative">
                 <input type="text" class="form-control" placeholder="Bạn cần tìm gì?">
-                <ul class="dropdown-menu" id="search-dropdown" style="position: absolute; top: 100%; transform: translateX(-50%); left: 50%; display: none; z-index: 1050;">
-                    <!-- Kết quả tìm kiếm sẽ được thêm vào đây -->
-                </ul>
+                <ul class="dropdown-menu" id="search-dropdown" 
+                style="position: absolute; top: 100%; transform: translateX(-50%); left: 50%; display: none; z-index: 1050;"></ul>
             </div>  
 
             <div class="contact-info d-flex align-items-center">
@@ -63,7 +60,7 @@
                 <a href="#" class="text-white mx-2"><i class="fas fa-map-marker-alt"></i> Cửa hàng gần bạn</a>
                 <a href="#" class="text-white mx-2"><i class="fas fa-truck"></i> Tra cứu đơn hàng</a>
                 <button class="btn text-white mx-2" id="cartButton"><i class="fas fa-shopping-cart"></i> Giỏ hàng</button>
-                <!-- User Dropdown -->
+                
                 <div class="dropdown">
                     <a href="#" id="account-link" class="text-white mx-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i> Hi, <span id="userFullName"></span>
@@ -78,7 +75,7 @@
         </div>
     </div>
 
-    <!-- Left Dropend Menu -->
+    <!-- Menu danh mục -->
     <div class="container-fluid mt-3 d-flex">
         <div class="content-wrapper d-flex flex-row w-100">
             <div class="left-menu">
@@ -87,9 +84,7 @@
                         <button type="button" class="btn btn-light dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
                             Điện thoại, Tablet
                         </button>
-                        <ul class="dropdown-menu" id="categorySidebar">
-                            <!-- Categories will be dynamically inserted here -->
-                        </ul>
+                        <ul class="dropdown-menu" id="categorySidebar"></ul>
                     </div>
                     <button type="button" class="btn btn-light w-100">Laptop</button>
                     <button type="button" class="btn btn-light w-100">Âm thanh</button>
@@ -105,7 +100,7 @@
                 </div>
             </div>
 
-            <!-- Center Carousel -->
+            <!-- Mục thông báo -->
             <div class="center-carousel">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
@@ -143,7 +138,7 @@
                 </div>
             </div>
 
-            <!-- Right Images -->
+            <!-- Ảnh bên phải -->
             <div class="right-images">
                 <div class="mb-2">
                     <img src="images/m55-cate-gia-hotsale-moi-10990.webp" class="img-fluid" alt="...">
@@ -155,23 +150,20 @@
                     <img src="images/b2s-2024-right-banner-laptop.webp" class="img-fluid" alt="...">
                 </div>
             </div>
+
         </div>
     </div>
 
     <!-- Sản phẩm mới về -->
     <div class="container mt-5">
         <h2 class="text-center font-weight-bold">Sản phẩm mới về</h2>
-        <div class="row justify-content-center" id="product-list">
-            <!-- Products will be dynamically inserted here -->
-        </div>
+        <div class="row justify-content-center" id="product-list"></div>
     </div>
 
-    <!-- Category-wise Product Sections -->
-    <div class="container mt-5" id="category-products">
-        <!-- Category sections will be dynamically inserted here -->
-    </div>
+    <!-- Sản phẩm theo danh mục -->
+    <div class="container mt-5" id="category-products"></div>
 
-    <!-- Cart Modal -->
+    <!-- Giỏ hàng -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,9 +172,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="cartItems">
-                        <!-- Cart items will be dynamically inserted here -->
-                    </div>
+                    <div id="cartItems"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
