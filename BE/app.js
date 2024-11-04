@@ -9,6 +9,8 @@ const productRoutes = require('./routes/product');
 const cartRoutes = require('./routes/cart');
 const addressRoutes = require('./routes/address');
 const userRoutes = require('./routes/user');
+require('dotenv').config({ path: './BE/.env' });
+
 
 dotenv.config();
 connectDB();
