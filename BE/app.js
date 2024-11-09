@@ -9,6 +9,7 @@ const productRoutes = require('./routes/product');
 const cartRoutes = require('./routes/cart');
 const addressRoutes = require('./routes/address');
 const userRoutes = require('./routes/user');
+const orderRoutes = require('./routes/order');
 require('dotenv').config({ path: './BE/.env' });
 
 
@@ -28,6 +29,7 @@ app.use('/api/brands', brandRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Cấu hình để phục vụ các file tĩnh trong thư mục 'frontend'
 app.use(express.static(path.join(__dirname, '../fe')));

@@ -176,11 +176,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Thanh toán</button>
+                    <button type="button" class="btn btn-primary" onclick="redirectToCheckout()">Thanh toán</button>
                 </div>
             </div>
         </div>
     </div>
+    
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -506,6 +507,13 @@
             hideSearchDropdown();
         }
     });
+    </script>
+    
+    <!-- Chuyển đến trang xác nhận đơn hàng -->
+    <script>
+        function redirectToCheckout() {
+            window.location.href = 'order-confirmation.html';
+        }
     </script>
 
 </body>
