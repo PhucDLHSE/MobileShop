@@ -4,65 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Danh mục</title>
-    <!-- Link to Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/category.css">
+    <link href="css/category.css" rel="stylesheet">
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Admin Dashboard</div>
-            <div class="list-group list-group-flush">
-                <a href="admin-dashboard.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="product.html" class="list-group-item list-group-item-action bg-light">Sản phẩm</a>
-                <a href="category.html" class="list-group-item list-group-item-action bg-light active">Danh mục</a>
-                <a href="brand.html" class="list-group-item list-group-item-action bg-light">Thương hiệu</a>
-                <a href="user.html" class="list-group-item list-group-item-action bg-light">Người dùng</a>
-            </div>
+    <div class="container">
+        <h1 class="text-center">Quản lý Danh mục</h1>
+        <button id="createCategoryBtn" class="btn btn-success mb-3">Tạo danh mục</button>
+        <div id="categoryTableContainer">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be injected here by JavaScript -->
+                </tbody>
+            </table>
         </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">Menu</button>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Xin chào, <span id="userFullName">Admin</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Cài đặt</a>
-                                <a class="dropdown-item" href="#">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="container-fluid">
-                <h1 class="mt-4">Quản lý Danh mục</h1>
-                <button id="createCategoryBtn" class="btn btn-success mb-3">Tạo danh mục</button>
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Tên</th>
-                            <th>Mô tả</th>
-                            <th>Chức năng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will be injected here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
     </div>
-    <!-- /#wrapper -->
 
     <!-- Modal for Creating/Editing Category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -101,21 +65,10 @@
     <script>
         let editingCategoryId = null;
 
-        // Toggle the menu
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-
-        // Load categories from API and display them in the table
         document.addEventListener('DOMContentLoaded', function () {
-            const fullName = localStorage.getItem('fullName') || 'Admin';
-            document.getElementById('userFullName').textContent = fullName;
-
             loadCategories();
         });
 
-        // Function to load categories from API
         function loadCategories() {
             fetch('http://localhost:5000/api/categories', {
                 method: 'GET',
@@ -127,50 +80,21 @@
             .then(response => response.json())
             .then(categories => {
                 const tbody = document.querySelector('table tbody');
-                tbody.innerHTML = ''; // Clear old table content
+                tbody.innerHTML = '';
 
-                // Loop through each category and create a row in the table
                 categories.forEach((category, index) => {
-                    const row = document.createElement('tr');
-
-                    // Create index cell
-                    const cellIndex = document.createElement('td');
-                    cellIndex.textContent = index + 1;
-                    row.appendChild(cellIndex);
-
-                    // Create name cell
-                    const cellName = document.createElement('td');
-                    cellName.textContent = category.name || 'No name provided';
-                    row.appendChild(cellName);
-
-                    // Create description cell
-                    const cellDescription = document.createElement('td');
-                    cellDescription.textContent = category.description || 'No description provided';
-                    row.appendChild(cellDescription);
-
-                    // Create actions cell
-                    const cellActions = document.createElement('td');
-
-                    const editButton = document.createElement('button');
-                    editButton.textContent = 'Sửa';
-                    editButton.className = 'btn btn-info btn-sm';
-                    editButton.addEventListener('click', function() {
-                        showEditModal(category);
-                    });
-                    cellActions.appendChild(editButton);
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Xóa';
-                    deleteButton.className = 'btn btn-danger btn-sm';
-                    deleteButton.addEventListener('click', function() {
-                        deleteCategory(category._id, row);
-                    });
-                    cellActions.appendChild(deleteButton);
-
-                    row.appendChild(cellActions);
-
-                    // Add the row to tbody
-                    tbody.appendChild(row);
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${category.name || 'No name provided'}</td>
+                            <td>${category.description || 'No description provided'}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="editCategory('${category._id}')">Sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteCategory('${category._id}')">Xóa</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
                 });
             })
             .catch(error => {
@@ -178,7 +102,6 @@
             });
         }
 
-        // Show Create Category Modal
         document.getElementById("createCategoryBtn").addEventListener("click", function () {
             editingCategoryId = null;
             document.getElementById("categoryForm").reset();
@@ -186,30 +109,36 @@
             $('#categoryModal').modal('show');
         });
 
-        // Show Edit Category Modal
-        function showEditModal(category) {
-            editingCategoryId = category._id;
-            document.getElementById("categoryName").value = category.name;
-            document.getElementById("categoryDescription").value = category.description;
-            document.getElementById("categoryModalLabel").textContent = "Sửa danh mục";
-            $('#categoryModal').modal('show');
+        function editCategory(categoryId) {
+            fetch(`http://localhost:5000/api/categories/${categoryId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                }
+            })
+            .then(response => response.json())
+            .then(category => {
+                editingCategoryId = category._id;
+                document.getElementById("categoryName").value = category.name;
+                document.getElementById("categoryDescription").value = category.description;
+                document.getElementById("categoryModalLabel").textContent = "Sửa danh mục";
+                $('#categoryModal').modal('show');
+            })
+            .catch(error => {
+                console.error('Error fetching category:', error);
+            });
         }
 
-        // Save new or edited category
         document.getElementById("saveCategoryBtn").addEventListener("click", function () {
             const categoryName = document.getElementById("categoryName").value.trim();
             const categoryDescription = document.getElementById("categoryDescription").value.trim();
 
             if (categoryName && categoryDescription) {
-                const categoryData = {
-                    name: categoryName,
-                    description: categoryDescription
-                };
-
+                const categoryData = { name: categoryName, description: categoryDescription };
                 const url = editingCategoryId ? `http://localhost:5000/api/categories/${editingCategoryId}` : 'http://localhost:5000/api/categories';
                 const method = editingCategoryId ? 'PUT' : 'POST';
 
-                // Send data to API to create or edit a category
                 fetch(url, {
                     method: method,
                     headers: {
@@ -219,27 +148,19 @@
                     body: JSON.stringify(categoryData)
                 })
                 .then(response => response.json())
-                .then(data => {
-                    // Close modal after saving successfully
+                .then(() => {
                     $('#categoryModal').modal('hide');
-                    
-                    // Clear form data
-                    document.getElementById("categoryForm").reset();
-
-                    // Reload the category list to include the new or updated category
                     loadCategories();
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Không thể tạo danh mục');
+                    console.error('Error saving category:', error);
                 });
             } else {
                 alert("Vui lòng điền đầy đủ thông tin.");
             }
         });
 
-        // Delete category
-        function deleteCategory(categoryId, row) {
+        function deleteCategory(categoryId) {
             if (confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
                 fetch(`http://localhost:5000/api/categories/${categoryId}`, {
                     method: 'DELETE',
@@ -248,16 +169,9 @@
                         'x-auth-token': localStorage.getItem('authToken')
                     }
                 })
-                .then(response => {
-                    if (response.ok) {
-                        row.remove(); // Remove row from table
-                    } else {
-                        throw new Error('Xóa danh mục thất bại');
-                    }
-                })
+                .then(() => loadCategories())
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting category');
+                    console.error('Error deleting category:', error);
                 });
             }
         }

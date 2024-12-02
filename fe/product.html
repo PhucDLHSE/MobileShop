@@ -5,84 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý sản phẩm</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/product.css"> 
+    <link rel="stylesheet" href="css/product.css">
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Admin Dashboard</div>
-            <div class="list-group list-group-flush">
-                <a href="admin-dashboard.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="product.html" class="list-group-item list-group-item-action bg-light active">Sản phẩm</a>
-                <a href="brand.html" class="list-group-item list-group-item-action bg-light">Thương hiệu</a>
-                <a href="category.html" class="list-group-item list-group-item-action bg-light">Danh mục</a>
-                <a href="user.html" class="list-group-item list-group-item-action bg-light">Người dùng</a>
-            </div>
+    <div class="content">
+        <h1 class="text-center">Quản lý sản phẩm</h1>
+        <button id="createProductBtn" class="btn btn-success mb-3">Thêm sản phẩm</button>
+        <div class="table-container">
+            <table class="table table-striped" id="productTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Danh mục</th>
+                        <th>Thương hiệu</th>
+                        <th>Giá</th>
+                        <th>Trạng thái</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Product data will load here -->
+                </tbody>
+            </table>
         </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">Menu</button>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Thông báo</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Xin chào, <span id="userFullName">Admin</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Cài đặt</a>
-                                <a class="dropdown-item" href="#" onclick="logout()">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="container-fluid">
-                <h1 class="mt-4">Quản lý sản phẩm</h1>
-                <button id="createProductBtn" class="btn btn-success mb-3">Thêm sản phẩm</button>
-                <table class="table table-striped" id="productTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên</th>
-                            <th>Danh mục</th>
-                            <th>Thương hiệu</th>
-                            <th>Giá</th>
-                            <th>Trạng thái</th>
-                            <th>Chức năng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Products will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
     </div>
-    <!-- /#wrapper -->
 
-    <!-- Modal for Creating/Editing Product -->
+    <!-- Modal for Add/Edit Product -->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="productModalLabel">Thêm sản phẩm mới</h5>
+                    <h5 class="modal-title" id="productModalLabel">Thêm sản phẩm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -90,24 +44,20 @@
                 <div class="modal-body">
                     <form id="productForm">
                         <div class="form-group">
-                            <label for="productName">Tên</label>
-                            <input type="text" class="form-control" id="productName" placeholder="Nhập tên sản phẩm" required>
+                            <label for="productName">Tên sản phẩm</label>
+                            <input type="text" class="form-control" id="productName" required>
                         </div>
                         <div class="form-group">
                             <label for="productCategory">Danh mục</label>
-                            <select class="form-control" id="productCategory" required>
-                                <!-- Options will be loaded dynamically -->
-                            </select>
+                            <select class="form-control" id="productCategory" required></select>
                         </div>
                         <div class="form-group">
                             <label for="productBrand">Thương hiệu</label>
-                            <select class="form-control" id="productBrand" required>
-                                <!-- Options will be loaded dynamically -->
-                            </select>
+                            <select class="form-control" id="productBrand" required></select>
                         </div>
                         <div class="form-group">
                             <label for="productPrice">Giá</label>
-                            <input type="text" class="form-control" id="productPrice" placeholder="Nhập giá tiền(xxx,xxx,xxx)" required>
+                            <input type="text" class="form-control" id="productPrice" required>
                         </div>
                         <div class="form-group">
                             <label for="productStatus">Trạng thái</label>
@@ -118,11 +68,11 @@
                         </div>
                         <div class="form-group">
                             <label for="productDescription">Thông tin chi tiết</label>
-                            <textarea class="form-control" id="productDescription" placeholder="Nhập thông tin chi tiết" required></textarea>
+                            <textarea class="form-control" id="productDescription" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="productImage">Hình ảnh</label>
-                            <input type="text" class="form-control" id="productImage" placeholder="Thêm URLs của hình ảnh(...,...,...,...)" required>
+                            <label for="productImages">Hình ảnh</label>
+                            <input type="text" class="form-control" id="productImages" placeholder="URL, URL" required>
                         </div>
                     </form>
                 </div>
@@ -134,31 +84,57 @@
         </div>
     </div>
 
-    <!-- Bootstrap and necessary JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let editingProductId = null;
 
-        // Toggle the menu
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+
+            document.getElementById('createProductBtn').addEventListener('click', () => {
+                showCreateModal();
+                loadSelectOptions();
+            });
+
+            document.getElementById('saveProductBtn').addEventListener('click', saveProduct);
         });
 
-        // Load categories and brands for the select options
+        function loadProducts() {
+            fetch('http://localhost:5000/api/products', {
+                headers: { 'x-auth-token': localStorage.getItem('authToken') }
+            })
+            .then(response => response.json())
+            .then(products => {
+                const tableBody = document.querySelector('#productTable tbody');
+                tableBody.innerHTML = '';
+
+                products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product._id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.category?.name || 'N/A'}</td>
+                            <td>${product.brand?.name || 'N/A'}</td>
+                            <td>${product.price}</td>
+                            <td>${product.status}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editProduct('${product._id}')">Sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product._id}')">Xóa</button>
+                            </td>
+                        </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
+        }
+
         function loadSelectOptions(selectedCategoryId = null, selectedBrandId = null) {
-            // Load Categories
             fetch('http://localhost:5000/api/categories', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': localStorage.getItem('authToken')
-                }
+                headers: { 'x-auth-token': localStorage.getItem('authToken') }
             })
             .then(response => response.json())
             .then(categories => {
-                const categorySelect = document.getElementById("productCategory");
+                const categorySelect = document.getElementById('productCategory');
                 categorySelect.innerHTML = '';
                 categories.forEach(category => {
                     const option = document.createElement('option');
@@ -169,20 +145,14 @@
                     }
                     categorySelect.appendChild(option);
                 });
-            })
-            .catch(error => console.error('Error loading categories:', error));
+            });
 
-            // Load Brands
             fetch('http://localhost:5000/api/brands', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': localStorage.getItem('authToken')
-                }
+                headers: { 'x-auth-token': localStorage.getItem('authToken') }
             })
             .then(response => response.json())
             .then(brands => {
-                const brandSelect = document.getElementById("productBrand");
+                const brandSelect = document.getElementById('productBrand');
                 brandSelect.innerHTML = '';
                 brands.forEach(brand => {
                     const option = document.createElement('option');
@@ -193,176 +163,74 @@
                     }
                     brandSelect.appendChild(option);
                 });
-            })
-            .catch(error => console.error('Không tải được danh sách thương hiệu', error));
+            });
         }
 
-        // Load products from API and display them in the table
-        function loadProducts() {
-            fetch("http://localhost:5000/api/products", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": localStorage.getItem('authToken')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector("#productTable tbody");
-                tableBody.innerHTML = "";
-
-                data.forEach(product => {
-                    const row = document.createElement("tr");
-                    
-                    // Add a click event listener to redirect to product details page
-                    row.addEventListener("click", () => {
-                        window.location.href = `/product-details/${product._id}`;
-                    });
-
-
-                    row.innerHTML = `
-                        <td>${product._id}</td>
-                        <td>${product.name}</td>
-                        <td>${product.category.name}</td>
-                        <td>${product.brand.name}</td>
-                        <td>${product.price}</td>
-                        <td>${product.status}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" onclick="event.stopPropagation(); showEditModal('${product._id}')">Sửa</button>
-                            <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteProduct('${product._id}', this)">Xóa</button>
-                        </td>
-                    `;
-
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error("Error fetching products:", error));
-        }
-
-        // Show Create Product Modal
-        document.getElementById("createProductBtn").addEventListener("click", function () {
+        function showCreateModal() {
             editingProductId = null;
-            document.getElementById("productForm").reset();
-            document.getElementById("productModalLabel").textContent = "Thêm sản phẩm mới";
-            loadSelectOptions();
+            document.getElementById('productForm').reset();
+            document.getElementById('productModalLabel').textContent = 'Thêm sản phẩm';
             $('#productModal').modal('show');
-        });
-
-        // Save new or edited product
-        document.getElementById("saveProductBtn").addEventListener("click", function () {
-            const productName = document.getElementById("productName").value.trim();
-            const productCategory = document.getElementById("productCategory").value.trim();
-            const productBrand = document.getElementById("productBrand").value.trim();
-            const productPrice = document.getElementById("productPrice").value.trim();
-            const productStatus = document.getElementById("productStatus").value.trim();
-            const productDescription = document.getElementById("productDescription").value.trim();
-            const productImages = document.getElementById("productImage").value.trim().split(',');
-
-            if (productName && productCategory && productBrand && productPrice && productStatus && productDescription && productImages.length > 0) {
-                const productData = {
-                    name: productName,
-                    category: productCategory,
-                    brand: productBrand,
-                    price: productPrice,
-                    status: productStatus,
-                    description: productDescription,
-                    images: productImages
-                };
-
-                const url = editingProductId ? `http://localhost:5000/api/products/${editingProductId}` : 'http://localhost:5000/api/products';
-                const method = editingProductId ? 'PUT' : 'POST';
-
-                // Send data to API to create or edit a product
-                fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': localStorage.getItem('authToken')
-                    },
-                    body: JSON.stringify(productData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Close modal after saving successfully
-                    $('#productModal').modal('hide');
-                    
-                    // Clear form data
-                    document.getElementById("productForm").reset();
-
-                    // Reload the product list to include the new or updated product
-                    loadProducts();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Không thể tạo sản phẩm!');
-                });
-            } else {
-                alert("Vui lòng điền đầy đủ thông tin.");
-            }
-        });
-
-        // Delete product
-        function deleteProduct(productId, button) {
-            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-                fetch(`http://localhost:5000/api/products/${productId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': localStorage.getItem('authToken')
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        const row = button.closest('tr');
-                        row.remove(); // Remove row from table
-                    } else {
-                        throw new Error('Xóa sản phẩm thất bại');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Lỗi xóa sản phẩm');
-                });
-            }
         }
 
-        // Show Edit Product Modal
-        function showEditModal(productId) {
+        function saveProduct() {
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                brand: document.getElementById('productBrand').value,
+                price: document.getElementById('productPrice').value,
+                status: document.getElementById('productStatus').value,
+                description: document.getElementById('productDescription').value,
+                images: document.getElementById('productImages').value.split(','),
+            };
+
+            const method = editingProductId ? 'PUT' : 'POST';
+            const url = editingProductId
+                ? `http://localhost:5000/api/products/${editingProductId}`
+                : 'http://localhost:5000/api/products';
+
+            fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken'),
+                },
+                body: JSON.stringify(productData),
+            })
+            .then(() => {
+                $('#productModal').modal('hide');
+                loadProducts();
+            });
+        }
+
+        function editProduct(productId) {
             editingProductId = productId;
 
             fetch(`http://localhost:5000/api/products/${productId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': localStorage.getItem('authToken')
-                }
+                headers: { 'x-auth-token': localStorage.getItem('authToken') },
             })
             .then(response => response.json())
             .then(product => {
-                document.getElementById("productName").value = product.name;
-                loadSelectOptions(product.category._id, product.brand._id);
-                document.getElementById("productPrice").value = product.price;
-                document.getElementById("productStatus").value = product.status;
-                document.getElementById("productDescription").value = product.description;
-                document.getElementById("productImage").value = product.images.join(',');
+                document.getElementById('productName').value = product.name;
+                loadSelectOptions(product.category?._id, product.brand?._id);
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productStatus').value = product.status;
+                document.getElementById('productDescription').value = product.description;
+                document.getElementById('productImages').value = product.images.join(',');
 
-                document.getElementById("productModalLabel").textContent = "Chỉnh sửa thông tin sản phẩm";
+                document.getElementById('productModalLabel').textContent = 'Sửa sản phẩm';
                 $('#productModal').modal('show');
-            })
-            .catch(error => console.error('Error fetching product details:', error));
+            });
         }
 
-        // Load the products when the page loads
-        document.addEventListener('DOMContentLoaded', function () {
-            const fullName = localStorage.getItem('fullName') || 'Admin';
-            document.getElementById('userFullName').textContent = fullName;
-
-            loadProducts();
-        });
-
-        function logout() {
-            localStorage.removeItem('authToken');
-            window.location.href = 'http://localhost:5000/login';
+        function deleteProduct(productId) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                fetch(`http://localhost:5000/api/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: { 'x-auth-token': localStorage.getItem('authToken') },
+                })
+                .then(() => loadProducts());
+            }
         }
     </script>
 </body>

@@ -2,6 +2,9 @@ const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
+
+// Import Routes
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/category');
 const brandRoutes = require('./routes/brand');
@@ -10,19 +13,21 @@ const cartRoutes = require('./routes/cart');
 const addressRoutes = require('./routes/address');
 const userRoutes = require('./routes/user');
 const orderRoutes = require('./routes/order');
-require('dotenv').config({ path: './BE/.env' });
 
+// Load environment variables
+dotenv.config({ path: './BE/.env' });
 
-dotenv.config();
+// Connect to Database
 connectDB();
 
 const app = express();
-const path = require('path');
+const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Sử dụng routes cho các API
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/brands', brandRoutes);
@@ -30,37 +35,42 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/users', userRoutes);
 
-// Cấu hình để phục vụ các file tĩnh trong thư mục 'frontend'
+// Static files
 app.use(express.static(path.join(__dirname, '../fe')));
 
+// Routes for specific pages
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/index.html'));
 });
 
 app.get('/product-details/:id', (req, res) => {
-    const productId = req.params.id;
     res.sendFile(path.join(__dirname, '../fe/product-details.html'));
 });
 
 app.get('/product-dt/:id', (req, res) => {
-    const productId = req.params.id;
     res.sendFile(path.join(__dirname, '../fe/product-dt.html'));
 });
 
-// Kết nối routes cho user
-app.use('/api/users', userRoutes);
-
-
-//Cors
-app.use(cors());
-
-
-// Thiết lập route cho trang đăng nhập
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/login.html'));
 });
 
-const PORT = process.env.PORT || 5000;
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, '../fe/admin/admin.html'));
+});
 
+// Handle 404 errors
+app.use((req, res, next) => {
+    res.status(404).send({ message: 'Route not found!' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ message: 'Something went wrong!' });
+});
+
+// Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -9,74 +9,40 @@
     <link rel="stylesheet" href="css/brand.css">
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Admin Dashboard</div>
-            <div class="list-group list-group-flush">
-                <a href="admin-dashboard.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="product.html" class="list-group-item list-group-item-action bg-light">Sản phẩm</a>
-                <a href="category.html" class="list-group-item list-group-item-action bg-light">Danh mục</a>
-                <a href="brand.html" class="list-group-item list-group-item-action bg-light active">Thương hiệu</a>
-                <a href="user.html" class="list-group-item list-group-item-action bg-light">Người dùng</a>
-            </div>
+    <div class="container">
+        <h1 class="text-center">Quản lý Thương hiệu</h1>
+        <button id="createBrandBtn" class="btn btn-success mb-3">Tạo thương hiệu</button>
+        <div id="brandTableContainer">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Các dòng sẽ được chèn vào đây bởi JavaScript -->
+                </tbody>
+            </table>
         </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">Menu</button>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Xin chào, <span id="userFullName">Admin</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Cài đặt</a>
-                                <a class="dropdown-item" href="#">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="container-fluid">
-                <h1 class="mt-4">Quản lý Thương hiệu</h1>
-                <button id="createBrandBtn" class="btn btn-success mb-3">Tạo thương hiệu</button>
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Tên</th>
-                            <th>Mô tả</th>
-                            <th>Chức năng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will be injected here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
     </div>
-    <!-- /#wrapper -->
 
-    <!-- Modal for Creating/Editing Brand -->
+    <!-- Modal cho việc tạo/sửa thương hiệu -->
     <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
+                <!-- Tiêu đề Modal -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="brandModalLabel">Tạo/Sửa thương hiệu</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <!-- Nội dung Modal -->
                 <div class="modal-body">
                     <form id="brandForm">
-                        <input type="hidden" id="brandId">
                         <div class="form-group">
                             <label for="brandName">Tên</label>
                             <input type="text" class="form-control" id="brandName" placeholder="Nhập tên thương hiệu" required>
@@ -87,6 +53,7 @@
                         </div>
                     </form>
                 </div>
+                <!-- Footer Modal -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-primary" id="saveBrandBtn">Lưu</button>
@@ -95,27 +62,16 @@
         </div>
     </div>
 
-    <!-- Bootstrap and necessary JavaScript -->
+    <!-- Bootstrap và JavaScript cần thiết -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let editingBrandId = null;
 
-        // Toggle the menu
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-
-        // Load brands from API and display them in the table
         document.addEventListener('DOMContentLoaded', function () {
-            const fullName = localStorage.getItem('fullName') || 'Admin';
-            document.getElementById('userFullName').textContent = fullName;
-
             loadBrands();
         });
 
-        // Function to load brands from API
         function loadBrands() {
             fetch('http://localhost:5000/api/brands', {
                 method: 'GET',
@@ -127,58 +83,28 @@
             .then(response => response.json())
             .then(brands => {
                 const tbody = document.querySelector('table tbody');
-                tbody.innerHTML = ''; // Clear old table content
+                tbody.innerHTML = ''; // Xóa nội dung cũ
 
-                // Loop through each brand and create a row in the table
                 brands.forEach((brand, index) => {
-                    const row = document.createElement('tr');
-
-                    // Create index cell
-                    const cellIndex = document.createElement('td');
-                    cellIndex.textContent = index + 1;
-                    row.appendChild(cellIndex);
-
-                    // Create name cell
-                    const cellName = document.createElement('td');
-                    cellName.textContent = brand.name || 'No name provided';
-                    row.appendChild(cellName);
-
-                    // Create description cell
-                    const cellDescription = document.createElement('td');
-                    cellDescription.textContent = brand.description || 'No description provided';
-                    row.appendChild(cellDescription);
-
-                    // Create actions cell
-                    const cellActions = document.createElement('td');
-
-                    const editButton = document.createElement('button');
-                    editButton.textContent = 'Sửa';
-                    editButton.className = 'btn btn-info btn-sm';
-                    editButton.addEventListener('click', function() {
-                        showEditModal(brand);
-                    });
-                    cellActions.appendChild(editButton);
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Xóa';
-                    deleteButton.className = 'btn btn-danger btn-sm';
-                    deleteButton.addEventListener('click', function() {
-                        deleteBrand(brand._id, row);
-                    });
-                    cellActions.appendChild(deleteButton);
-
-                    row.appendChild(cellActions);
-
-                    // Add the row to tbody
-                    tbody.appendChild(row);
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${brand.name || 'Chưa có tên'}</td>
+                            <td>${brand.description || 'Chưa có mô tả'}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="editBrand('${brand._id}')">Sửa</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteBrand('${brand._id}')">Xóa</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
                 });
             })
             .catch(error => {
-                console.error('Error fetching brands:', error);
+                console.error('Lỗi khi tải danh sách thương hiệu:', error);
             });
         }
 
-        // Show Create Brand Modal
         document.getElementById("createBrandBtn").addEventListener("click", function () {
             editingBrandId = null;
             document.getElementById("brandForm").reset();
@@ -186,16 +112,27 @@
             $('#brandModal').modal('show');
         });
 
-        // Show Edit Brand Modal
-        function showEditModal(brand) {
-            editingBrandId = brand._id;
-            document.getElementById("brandName").value = brand.name;
-            document.getElementById("brandDescription").value = brand.description;
-            document.getElementById("brandModalLabel").textContent = "Chỉnh sửa thương hiệu";
-            $('#brandModal').modal('show');
+        function editBrand(brandId) {
+            fetch(`http://localhost:5000/api/brands/${brandId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': localStorage.getItem('authToken')
+                }
+            })
+            .then(response => response.json())
+            .then(brand => {
+                editingBrandId = brand._id;
+                document.getElementById("brandName").value = brand.name;
+                document.getElementById("brandDescription").value = brand.description;
+                document.getElementById("brandModalLabel").textContent = "Chỉnh sửa thương hiệu";
+                $('#brandModal').modal('show');
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy thông tin thương hiệu:', error);
+            });
         }
 
-        // Save new or edited brand
         document.getElementById("saveBrandBtn").addEventListener("click", function () {
             const brandName = document.getElementById("brandName").value.trim();
             const brandDescription = document.getElementById("brandDescription").value.trim();
@@ -209,7 +146,6 @@
                 const url = editingBrandId ? `http://localhost:5000/api/brands/${editingBrandId}` : 'http://localhost:5000/api/brands';
                 const method = editingBrandId ? 'PUT' : 'POST';
 
-                // Send data to API to create or edit a brand
                 fetch(url, {
                     method: method,
                     headers: {
@@ -219,27 +155,20 @@
                     body: JSON.stringify(brandData)
                 })
                 .then(response => response.json())
-                .then(data => {
-                    // Close modal after saving successfully
+                .then(() => {
                     $('#brandModal').modal('hide');
-                    
-                    // Clear form data
-                    document.getElementById("brandForm").reset();
-
-                    // Reload the brand list to include the new or updated brand
                     loadBrands();
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error saving brand');
+                    console.error('Lỗi khi lưu thương hiệu:', error);
+                    alert('Không thể lưu thương hiệu. Vui lòng thử lại.');
                 });
             } else {
                 alert("Vui lòng điền đầy đủ thông tin.");
             }
         });
 
-        // Delete brand
-        function deleteBrand(brandId, row) {
+        function deleteBrand(brandId) {
             if (confirm("Bạn có chắc chắn muốn xóa thương hiệu này?")) {
                 fetch(`http://localhost:5000/api/brands/${brandId}`, {
                     method: 'DELETE',
@@ -248,16 +177,10 @@
                         'x-auth-token': localStorage.getItem('authToken')
                     }
                 })
-                .then(response => {
-                    if (response.ok) {
-                        row.remove(); // Remove row from table
-                    } else {
-                        throw new Error('Xóa thương hiệu thất bại');
-                    }
-                })
+                .then(() => loadBrands())
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting brand');
+                    console.error('Lỗi khi xóa thương hiệu:', error);
+                    alert('Không thể xóa thương hiệu. Vui lòng thử lại.');
                 });
             }
         }

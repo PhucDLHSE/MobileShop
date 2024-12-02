@@ -1,0 +1,71 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; 
+}
+
+body {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.sidebar a:hover, .sidebar a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.header {
+    height: 60px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.header .dropdown .fas {
+    font-size: 1.5rem;
+    color: #343a40; 
+    margin-right: 5px;
+}
+
+.header .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+
+.header .dropdown-menu {
+    margin-top: 5px;
+}
+
+
+
+.content {
+    flex-grow: 1;
+    overflow: hidden; 
+}
+
+iframe {
+    width: 100%;
+    height: calc(100vh - 60px);
+    border: none;
+    overflow-y: auto;
+}

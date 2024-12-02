@@ -1,65 +1,112 @@
+/* CSS chung cho giao diện */
 body {
     font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
 }
 
-#wrapper {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
-}
-
-#sidebar-wrapper {
-    min-height: 100vh;
-    margin-left: -15rem;
-    transition: margin 0.25s ease-out;
-    background-color: #f8f9fa; /* Thay đổi màu nền */
-}
-
-#sidebar-wrapper .sidebar-heading {
-    padding: 0.875rem 1.25rem;
-    font-size: 1.2rem;
-    color: #343a40; /* Màu chữ */
-}
-
-#sidebar-wrapper .list-group {
-    width: 15rem;
-}
-
-#sidebar-wrapper .list-group-item {
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    color: #343a40; /* Màu chữ */
-    background-color: #f8f9fa; /* Màu nền */
-    border: none; /* Không có đường viền */
-}
-
-#sidebar-wrapper .list-group-item:hover {
-    background-color: #e9ecef;
-    color: #007bff;
-    font-weight: bold;
-}
-
-#sidebar-wrapper .list-group-item.active {
-    background-color: #e9ecef;
-    color: #007bff;
-    font-weight: bold;
-    border-left: 3px solid #007bff; /* Thêm đường viền bên trái */
-}
-
-#page-content-wrapper {
-    width: 100%;
+/* Container chính */
+.container {
+    max-width: 100%;
+    margin: 20px auto;
     padding: 20px;
 }
 
-#wrapper.toggled #sidebar-wrapper {
-    margin-left: 0;
+/* Table Wrapper để quản lý thanh cuộn */
+#tableWrapper {
+    max-height: 500px; /* Giới hạn chiều cao toàn bộ khối */
+    overflow-x: hidden; /* Không cuộn ngang */
+    overflow-y: hidden;
+    border: 1px solid #dee2e6; /* Đường viền bảng */
+    margin-top: 10px;
+    background-color: #ffffff;
 }
 
-.card {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+/* Bảng */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: auto;
 }
 
-.card:hover {
+thead {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+thead th {
+    padding: 10px;
+    font-weight: bold;
+}
+
+tbody tr {
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+tbody td {
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+/* Buttons */
+#saveCategoryBtn, #createCategoryBtn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#saveCategoryBtn:hover, #createCategoryBtn:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border: none;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    color: #ffffff;
+}
+
+/* Modal */
+#categoryModal .modal-dialog {
+    max-width: 500px;
+    margin: auto;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #ffffff;
+    border-bottom: none;
+}
+
+.modal-footer button {
+    transition: transform 0.3s ease;
+}
+
+.modal-footer button:hover {
     transform: scale(1.05);
 }
