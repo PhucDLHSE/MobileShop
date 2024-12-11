@@ -162,13 +162,13 @@
     <div class="container mt-5">
         <h2 class="text-center font-weight-bold">Sản phẩm mới về</h2>
         <div class="row justify-content-center" id="product-list">
-            <!-- Sản phẩm sẽ được tải động từ API -->
+            <!-- Sản phẩm.... -->
         </div>
     </div>
 
-    <!-- Category-wise Product Sections -->
+    <!-- Sản phẩm theo danh mục -->
     <div class="container mt-5" id="category-products">
-        <!-- Các sản phẩm theo danh mục sẽ được tải động từ API -->
+        <!-- Sản phẩm theo danh mục.... -->
     </div>
 
     <!-- jQuery -->
@@ -179,7 +179,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom Script -->
+    <!-- Tất cả sản phẩm -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             fetchProducts();
@@ -223,10 +223,10 @@
     .catch(error => console.error('Error fetching products:', error));
 }
 
-// Hàm hiển thị thông báo yêu cầu đăng nhập
-function showLoginAlert() {
-    alert('Vui lòng đăng nhập để xem chi tiết sản phẩm.');
-}
+    // Yêu cầu đăng nhập
+    function showLoginAlert() {
+        alert('Vui lòng đăng nhập để xem chi tiết sản phẩm.');
+    }
         function fetchCategories() {
             fetch('http://localhost:5000/api/categories/public', {
                 method: 'GET',
@@ -244,12 +244,11 @@ function showLoginAlert() {
                 categoryProducts.innerHTML = '';
 
                 categories.forEach(category => {
-                    // Thêm danh mục vào dropdown và sidebar
                     const categoryItem = `<li><a class="dropdown-item" href="#">${category.name}</a></li>`;
                     categoryMenu.insertAdjacentHTML('beforeend', categoryItem);
                     categorySidebar.insertAdjacentHTML('beforeend', categoryItem);
 
-                    // Fetch sản phẩm cho từng danh mục
+                    // Sản phẩm cho từng danh mục
                     fetch(`http://localhost:5000/api/products/public/category/${category._id}`, {
                         method: 'GET',
                         headers: {
@@ -301,26 +300,24 @@ function showLoginAlert() {
     }
 });
 
-// Hàm tìm kiếm sản phẩm và hiển thị kết quả dưới dạng dropdown
-function searchProducts(keyword) {
-    fetch(`http://localhost:5000/api/products/search?keyword=${encodeURIComponent(keyword)}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(products => {
-        const searchDropdown = document.getElementById('search-dropdown');
-        searchDropdown.innerHTML = ''; // Xóa kết quả hiện tại
+    // Tìm kiếm sản phẩm
+    function searchProducts(keyword) {
+        fetch(`http://localhost:5000/api/products/search?keyword=${encodeURIComponent(keyword)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(products => {
+            const searchDropdown = document.getElementById('search-dropdown');
+            searchDropdown.innerHTML = ''; 
 
-        if (products.length === 0) {
-            searchDropdown.innerHTML = '<li class="dropdown-item">Không tìm thấy sản phẩm nào.</li>';
-            searchDropdown.style.display = 'block';
-            return;
-        }
-
-        // Hiển thị kết quả sản phẩm dạng dropdown
+            if (products.length === 0) {
+                searchDropdown.innerHTML = '<li class="dropdown-item">Không tìm thấy sản phẩm nào.</li>';
+                searchDropdown.style.display = 'block';
+                return;
+            }
         products.forEach(product => {
             const productItem = `
             <li class="dropdown-item" onclick="showLoginAlert()">
@@ -335,20 +332,18 @@ function searchProducts(keyword) {
     .catch(error => console.error('Error searching products:', error));
 }
 
-// Hàm ẩn dropdown tìm kiếm
-function hideSearchDropdown() {
+    // Ẩn tìm kiếm
+    function hideSearchDropdown() {
     const searchDropdown = document.getElementById('search-dropdown');
     searchDropdown.style.display = 'none';
-}
-
-document.addEventListener('click', function(event) {
-    const searchDropdown = document.getElementById('search-dropdown');
-    if (!searchDropdown.contains(event.target) && !event.target.matches('.search-bar input')) {
-        hideSearchDropdown();
     }
-});
 
+    document.addEventListener('click', function(event) {
+        const searchDropdown = document.getElementById('search-dropdown');
+        if (!searchDropdown.contains(event.target) && !event.target.matches('.search-bar input')) {
+        hideSearchDropdown();
+        }
+    });
     </script>
 </body>
-
 </html>

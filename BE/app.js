@@ -37,10 +37,10 @@ app.use('/api/addresses', addressRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 
-// Static files
+// File tĩnh bên font-end
 app.use(express.static(path.join(__dirname, '../fe')));
 
-// Routes for specific pages
+// Kết nối với trang homepage bên font-end
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/index.html'));
 });

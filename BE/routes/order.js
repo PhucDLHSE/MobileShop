@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 const { getAllOrders, createOrder, getOrderByCode } = require('../controllers/orderController');
 
 router.post('/', auth, createOrder);
-// Đường dẫn để lấy tất cả các đơn hàng
+
 router.get('/', getAllOrders);
 
 router.get('/:orderCode', getOrderByCode);

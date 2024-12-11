@@ -2,7 +2,7 @@ const Product = require('../models/Product');
 const Brand = require('../models/Brand');
 const Category = require('../models/Category');
 
-// Tạo mới Product
+// Thêm sản phẩm mới
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, status, brand, category, description, images, quantity } = req.body;
@@ -11,7 +11,7 @@ exports.createProduct = async (req, res) => {
     const categoryExists = await Category.findById(category);
 
     if (!brandExists || !categoryExists) {
-      return res.status(400).json({ msg: 'Brand or Category not found' });
+      return res.status(400).json({ msg: 'Không tìm thấy Brand hoặc Category tương ứng' });
     }
 
     const product = new Product({
@@ -26,14 +26,14 @@ exports.createProduct = async (req, res) => {
     });
 
     await product.save();
-    res.status(201).json({ msg: 'Product created successfully', product });
+    res.status(201).json({ msg: 'Sản phẩm đã được thêm thành công', product });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Lấy tất cả Products (Yêu cầu xác thực)
+// Lấy tất cả Sản phẩm (Yêu cầu xác thực)
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find().populate('brand category');
@@ -44,7 +44,7 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// Lấy tất cả Products (Công khai)
+// Lấy tất cả Sản phẩm
 exports.getPublicProducts = async (req, res) => {
   try {
     const products = await Product.find().populate('brand category');
@@ -55,12 +55,12 @@ exports.getPublicProducts = async (req, res) => {
   }
 };
 
-// Lấy một Product theo ID (Yêu cầu xác thực)
+// Lấy một Sản phẩm theo ID (Yêu cầu xác thực)
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('brand category');
     if (!product) {
-      return res.status(404).json({ msg: 'Product not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy sản phẩm!' });
     }
     res.json(product);
   } catch (err) {
@@ -69,7 +69,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// Lấy sản phẩm theo Category (Công khai)
+// Lấy sản phẩm theo Category
 exports.getPublicProductsByCategory = async (req, res) => {
   try {
     const products = await Product.find({ category: req.params.categoryId }).populate('brand category');
@@ -81,7 +81,7 @@ exports.getPublicProductsByCategory = async (req, res) => {
 };
 
 
-// Cập nhật Product
+// Cập nhật Sản phẩm
 exports.updateProduct = async (req, res) => {
   try {
     const { name, price, status, brand, category, description, images, quantity } = req.body;
@@ -91,7 +91,6 @@ exports.updateProduct = async (req, res) => {
       return res.status(404).json({ msg: 'Product not found' });
     }
 
-    // Cập nhật thông tin sản phẩm
     product.name = name || product.name;
     product.price = price || product.price;
     product.status = status || product.status;
@@ -109,29 +108,29 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Xóa Product
+// Xóa Sản phẩm
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
 
     if (!product) {
-      return res.status(404).json({ msg: 'Product not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy!' });
     }
 
-    res.json({ msg: 'Product removed successfully' });
+    res.json({ msg: 'Sản phẩm đã được xóa thành công' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Tìm kiếm sản phẩm công khai
+// Tìm kiếm sản phẩm
 exports.searchPublicProducts = async (req, res) => {
   try {
     const keyword = req.query.keyword ? {
       name: {
         $regex: req.query.keyword,
-        $options: 'i'  // 'i' để không phân biệt chữ hoa và chữ thường
+        $options: 'i' 
       }
     } : {};
 

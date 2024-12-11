@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/categoryController');
-// const productController = require('../controllers/productController');
 const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
 
-// Route công khai để lấy tất cả Categories
+// Lấy tất cả Category
 router.get('/public', categoryController.getPublicCategories);
-
-// // Route công khai để lấy sản phẩm theo Category
-// router.get('/public/category/:categoryId', productController.getPublicProductsByCategory);
 
 // Tạo mới Category
 router.post('/', auth, adminAuth, categoryController.createCategory);
 
-// Lấy tất cả Categories
+// Lấy tất cả Categories (Chỉ Admin)
 router.get('/', auth, categoryController.getCategories);
 
 // Lấy một Category theo ID

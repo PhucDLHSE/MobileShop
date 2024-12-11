@@ -2,8 +2,6 @@
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 
-
-// Helper function to generate a random order code
 function generateOrderCode() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers = '0123456789';
@@ -18,7 +16,6 @@ function generateOrderCode() {
     return code;
 }
 
-// Function to ensure the order code is unique
 async function getUniqueOrderCode() {
     let code;
     let isUnique = false;
@@ -39,32 +36,28 @@ exports.createOrder = async (req, res) => {
         const userId = req.user.id;
         const orderCode = await getUniqueOrderCode();
 
-        // Lấy thông tin giỏ hàng từ CSDL hoặc từ dữ liệu người dùng
         const cart = await Cart.findOne({ user: userId }).populate('products.product');
         
         if (!cart || cart.products.length === 0) {
             return res.status(400).json({ error: 'Giỏ hàng trống' });
         }
 
-        // Tính tổng tiền
         let totalAmount = 0;
         cart.products.forEach(item => {
-            const price = parseFloat(item.product.price.replace(/,/g, '')); // Chuyển đổi giá sang số
+            const price = parseFloat(item.product.price.replace(/,/g, ''));
             totalAmount += price * item.quantity;
         });
 
-        // Kiểm tra xem totalAmount có hợp lệ không
         if (isNaN(totalAmount)) {
             return res.status(400).json({ error: 'Tổng tiền không hợp lệ' });
         }
 
-        // Tạo đơn hàng với thông tin chi tiết mà người dùng nhập từ trang xác nhận
         const order = new Order({
             user: userId,
             orderCode: orderCode,
-            fullName, // Lưu trực tiếp tên người dùng nhập
-            phoneNumber, // Lưu trực tiếp số điện thoại người dùng nhập
-            address: ` ${ward}, ${district}, ${city}`, // Lưu địa chỉ chi tiết từ trang xác nhận
+            fullName, 
+            phoneNumber, 
+            address: ` ${ward}, ${district}, ${city}`, 
             items: cart.products.map(item => ({
                 product: item.product._id,
                 quantity: item.quantity,
@@ -74,10 +67,8 @@ exports.createOrder = async (req, res) => {
             notes
         });
 
-        // Lưu đơn hàng vào CSDL
         await order.save();
 
-        // Xóa tất cả các sản phẩm trong giỏ hàng của người dùng sau khi đặt hàng thành công
         cart.products = [];
         await cart.save();
 

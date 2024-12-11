@@ -7,16 +7,16 @@ const adminAuth = require('../middleware/adminAuth');
 // Tạo mới Brand
 router.post('/', auth, adminAuth, brandController.createBrand);
 
-// Lấy tất cả Brands
+// Lấy tất cả
 router.get('/', auth, brandController.getBrands);
 
-// Lấy một Brand theo ID
+// Lấy theo ID
 router.get('/:id', auth, brandController.getBrandById);
 
-// Cập nhật Brand
+// Cập nhật 
 router.put('/:id', auth, adminAuth, brandController.updateBrand);
 
-// Xóa Brand
+// Xóa 
 router.delete('/:id', auth, adminAuth, brandController.deleteBrand);
 
 module.exports = router;

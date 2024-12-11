@@ -11,7 +11,7 @@
     <div class="container mt-5">
         <h2 class="text-center mb-4">Xác nhận đơn hàng</h2>
         <div class="confirmation-container row g-4">
-            <!-- Shipping Information Section -->
+            <!-- Thông tin giao hàng -->
             <div class="col-md-8">
                 <div class="order-details">
                     <h4>Thông tin giao hàng</h4>
@@ -19,7 +19,7 @@
                         <input type="text" class="form-control" id="fullName" placeholder="Họ và Tên" required>
                         <input type="text" class="form-control" id="phoneNumber" placeholder="Số điện thoại" required>
                         <select id="addressDetail" class="form-select" required>
-                            <!-- Options populated from API -->
+                            <!-- Content -->
                         </select>
                         <input type="text" class="form-control" id="city" placeholder="Tỉnh/Thành phố" required>
                         <input type="text" class="form-control" id="district" placeholder="Quận/Huyện" required>
@@ -33,12 +33,12 @@
                 </div>
             </div>
 
-            <!-- Order Summary Section -->
+            <!-- Tóm tắt đơn hàng -->
             <div class="col-md-4">
                 <div class="order-summary">
                     <h4>Chi tiết giỏ hàng</h4>
                     <div id="orderSummary">
-                        <!-- Order items populated here from API -->
+                        <!-- Content -->
                     </div>
                     <div class="total-amount">Tổng cộng: <span id="totalAmount">0đ</span></div>
                     <button type="button" class="btn btn-success mt-3" id="confirmOrderBtn">Đặt hàng</button>

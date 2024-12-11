@@ -23,7 +23,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Các dòng sẽ được chèn vào đây bởi JavaScript -->
                 </tbody>
             </table>
         </div>
@@ -33,14 +32,14 @@
     <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <!-- Tiêu đề Modal -->
+                <!-- Header -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="brandModalLabel">Tạo/Sửa thương hiệu</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!-- Nội dung Modal -->
+                <!-- Content -->
                 <div class="modal-body">
                     <form id="brandForm">
                         <div class="form-group">
@@ -53,7 +52,7 @@
                         </div>
                     </form>
                 </div>
-                <!-- Footer Modal -->
+                <!-- Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-primary" id="saveBrandBtn">Lưu</button>
@@ -83,7 +82,7 @@
             .then(response => response.json())
             .then(brands => {
                 const tbody = document.querySelector('table tbody');
-                tbody.innerHTML = ''; // Xóa nội dung cũ
+                tbody.innerHTML = '';
 
                 brands.forEach((brand, index) => {
                     const row = `

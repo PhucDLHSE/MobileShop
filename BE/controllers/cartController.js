@@ -9,10 +9,10 @@ exports.addProductToCart = async (req, res) => {
 
     let cart = await Cart.findOne({ user: userId });
 
-    const product = await Product.findById(productId); // Tìm sản phẩm dựa trên ID
+    const product = await Product.findById(productId); 
 
     if (!product) {
-      return res.status(404).json({ msg: 'Product not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy sản phẩm' });
     }
 
     if (!cart) {
@@ -35,7 +35,7 @@ exports.addProductToCart = async (req, res) => {
     await cart.save();
 
     res.status(200).json({ 
-      msg: 'Product added to cart', 
+      msg: 'Sản phẩm đã được thêm vào giỏ hàng', 
       cart, 
       addedProduct: { 
         id: productId, 
@@ -58,13 +58,13 @@ exports.removeProductFromCart = async (req, res) => {
     let cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
-      return res.status(400).json({ msg: 'Cart not found' });
+      return res.status(400).json({ msg: 'Giỏ hàng không tồn tại' });
     }
 
     cart.products = cart.products.filter(p => p.product.toString() !== productId);
 
     await cart.save();
-    res.status(200).json({ msg: 'Product removed from cart', cart });
+    res.status(200).json({ msg: 'Sản phẩm đã được xóa khỏi giỏ hàng', cart });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -75,18 +75,13 @@ exports.removeProductFromCart = async (req, res) => {
 exports.viewCart = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Tìm giỏ hàng của người dùng và populate các trường cần thiết từ sản phẩm
     const cart = await Cart.findOne({ user: userId }).populate('products.product', 'name price images');
 
     if (!cart) {
-      return res.status(400).json({ msg: 'Cart is empty' });
+      return res.status(400).json({ msg: 'Giỏ hàng trống' });
     }
-
-    // Lọc các sản phẩm có giá trị null
     cart.products = cart.products.filter(item => item.product !== null);
 
-    // Lưu lại các thay đổi trong giỏ hàng nếu có bất kỳ sản phẩm null nào bị loại bỏ
     await cart.save();
 
     res.status(200).json(cart);

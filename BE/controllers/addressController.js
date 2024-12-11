@@ -1,18 +1,16 @@
 const Address = require('../models/Address');
 
-// Thêm Address mới
+// Thêm địa chỉ
 exports.createAddress = async (req, res) => {
   try {
     const { name, address, isDefault } = req.body;
     const userId = req.user.id;
-
     const newAddress = new Address({
       user: userId,
       name,
       address,
       isDefault,
     });
-
     await newAddress.save();
     res.status(201).json({ msg: 'Address added successfully', newAddress });
   } catch (err) {
@@ -21,7 +19,7 @@ exports.createAddress = async (req, res) => {
   }
 };
 
-// Lấy tất cả Address của một User
+// Lấy tất cả địa chỉ của 1 User
 exports.getAddresses = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -33,25 +31,20 @@ exports.getAddresses = async (req, res) => {
   }
 };
 
-// Xóa Address
+// Xóa địa chỉ
 exports.deleteAddress = async (req, res) => {
   try {
     const addressId = req.params.id;
     const userId = req.user.id;
-
-    // Tìm địa chỉ theo ID và user ID
     const address = await Address.findOne({ _id: addressId, user: userId });
 
     if (!address) {
       return res.status(404).json({ msg: 'Address not found' });
     }
 
-    // Kiểm tra nếu địa chỉ là địa chỉ mặc định
     if (address.isDefault) {
       return res.status(400).json({ msg: 'Cannot delete default address' });
     }
-
-    // Xóa địa chỉ nếu không phải là địa chỉ mặc định
     await Address.findByIdAndDelete(addressId);
 
     res.status(200).json({ msg: 'Address removed successfully' });

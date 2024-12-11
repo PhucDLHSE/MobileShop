@@ -1,26 +1,26 @@
 const Brand = require('../models/Brand');
 
-// Tạo mới Brand
+// Tạo Thương hiệu
 exports.createBrand = async (req, res) => {
   try {
     const { name, description } = req.body;
 
     let brand = await Brand.findOne({ name });
     if (brand) {
-      return res.status(400).json({ msg: 'Brand already exists' });
+      return res.status(400).json({ msg: 'Thương hiệu đã tồn tại' });
     }
 
     brand = new Brand({ name, description });
     await brand.save();
 
-    res.status(201).json({ msg: 'Brand created successfully', brand });
+    res.status(201).json({ msg: 'Thương hiệu đã được thêm thành công', brand });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Lấy tất cả Brands
+// Lấy tất cả Thương hiệu
 exports.getBrands = async (req, res) => {
   try {
     const brands = await Brand.find();
@@ -31,12 +31,12 @@ exports.getBrands = async (req, res) => {
   }
 };
 
-// Lấy một Brand theo ID
+// Lấy một Thương hiệu theo ID
 exports.getBrandById = async (req, res) => {
   try {
     const brand = await Brand.findById(req.params.id);
     if (!brand) {
-      return res.status(404).json({ msg: 'Brand not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy' });
     }
     res.json(brand);
   } catch (err) {
@@ -45,7 +45,7 @@ exports.getBrandById = async (req, res) => {
   }
 };
 
-// Cập nhật Brand
+// Cập nhật Thương hiệu
 exports.updateBrand = async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -56,26 +56,26 @@ exports.updateBrand = async (req, res) => {
     );
 
     if (!brand) {
-      return res.status(404).json({ msg: 'Brand not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy' });
     }
 
-    res.json({ msg: 'Brand updated successfully', brand });
+    res.json({ msg: 'Cập nhật thành công!', brand });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Xóa Brand
+// Xóa 
 exports.deleteBrand = async (req, res) => {
   try {
     const brand = await Brand.findByIdAndDelete(req.params.id);
 
     if (!brand) {
-      return res.status(404).json({ msg: 'Brand not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy' });
     }
 
-    res.json({ msg: 'Brand removed successfully' });
+    res.json({ msg: 'Thương hiệu đã được xóa thành công' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

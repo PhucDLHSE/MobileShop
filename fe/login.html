@@ -47,7 +47,6 @@
             </form>
         </div>
 
-        <!-- Overlay -->
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
@@ -64,9 +63,11 @@
         </div>
     </div>
 
+    <!-- Gọi JS auth để xác thực -->
     <script src="js/auth.js"></script>
+
     <script>
-        // Logic cho đăng nhập
+        // Đăng nhập
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();
     
@@ -85,12 +86,9 @@
             if (response.ok) {
                 const data = await response.json();
                 alert('Đăng nhập thành công!');
-            
-            // Lưu token và fullName vào localStorage
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('fullName', data.fullName);
 
-            // Điều hướng dựa trên vai trò của người dùng
             if (data.role === 'Admin') {
                 window.location.href = '/admin.html';
             } else if (data.role === 'Member') {
@@ -108,9 +106,7 @@
     }
 });
 
-
-
-        // Logic cho đăng ký
+        // Đăng ký
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -122,7 +118,7 @@
             const repeatPassword = document.getElementById('repeatPassword').value;
 
             if (password !== repeatPassword) {
-                alert('Passwords do not match!');
+                alert('Mật khẩu không trùng với mật khẩu đã nhập!');
                 return;
             }
 

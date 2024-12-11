@@ -9,9 +9,8 @@ exports.register = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+      return res.status(400).json({ msg: 'Email đã tồn tại' });
     }
-
     user = new User({
       fullName,
       phoneNumber,
@@ -20,11 +19,8 @@ exports.register = async (req, res) => {
       password,
       role
     });
-
     await user.save();
-
-    // Không trả về token sau khi đăng ký
-    res.status(201).json({ msg: 'Registration successful, please log in to get your token' });
+    res.status(201).json({ msg: 'Đăng ký thành công' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -39,12 +35,10 @@ exports.login = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      return res.status(400).json({ msg: 'Email hoặc mật khẩu không chính xác' });
     }
-
-    // Kiểm tra mật khẩu (ở đây không mã hóa mật khẩu nên chỉ so sánh trực tiếp)
     if (password !== user.password) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
+      return res.status(400).json({ msg: 'Sai mật khẩu' });
     }
 
     const payload = {
@@ -60,8 +54,7 @@ exports.login = async (req, res) => {
       { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
-        // Trả về token, role, fullName và thông báo thành công
-        res.json({ token, role: user.role, fullName: user.fullName, msg: 'Login successful' });
+        res.json({ token, role: user.role, fullName: user.fullName, msg: 'Đăng nhập thành công' });
       }
     );
   } catch (err) {

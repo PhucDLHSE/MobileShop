@@ -7,13 +7,13 @@ exports.createCategory = async (req, res) => {
 
     let category = await Category.findOne({ name });
     if (category) {
-      return res.status(400).json({ msg: 'Category already exists' });
+      return res.status(400).json({ msg: 'Danh mục này đã tồn tại' });
     }
 
     category = new Category({ name, description });
     await category.save();
 
-    res.status(201).json({ msg: 'Category created successfully', category });
+    res.status(201).json({ msg: 'Tạo danh mục mới thành công', category });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -36,7 +36,7 @@ exports.getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
-      return res.status(404).json({ msg: 'Category not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy!' });
     }
     res.json(category);
   } catch (err) {
@@ -56,10 +56,10 @@ exports.updateCategory = async (req, res) => {
     );
 
     if (!category) {
-      return res.status(404).json({ msg: 'Category not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy!' });
     }
 
-    res.json({ msg: 'Category updated successfully', category });
+    res.json({ msg: 'Danh mục đã được cập nhật thành công!', category });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -72,10 +72,10 @@ exports.deleteCategory = async (req, res) => {
       const category = await Category.findByIdAndDelete(req.params.id);
   
       if (!category) {
-        return res.status(404).json({ msg: 'Category not found' });
+        return res.status(404).json({ msg: 'Không tìm thấy!' });
       }
   
-      res.json({ msg: 'Category removed successfully' });
+      res.json({ msg: 'Danh mục đã được xóa thành công' });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');

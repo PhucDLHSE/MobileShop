@@ -42,7 +42,6 @@
     </div>
 
     <script>
-        // Chuyển trang khi click vào sidebar
         document.querySelectorAll('.sidebar a').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -53,7 +52,7 @@
                 // Thêm class active vào link được click
                 this.classList.add('active');
 
-                // Load trang mới vào iframe
+                // Load trang mới
                 const page = this.getAttribute('data-page');
                 document.getElementById('contentFrame').src = page;
             });

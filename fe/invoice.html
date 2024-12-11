@@ -11,14 +11,13 @@
     <div class="container mt-5">
         <div class="invoice-container">
             <div class="invoice-header">Hóa đơn</div>
-            <div id="orderCode" class="order-code"></div> <!-- Hiển thị mã đơn hàng ở góc phải -->
+            <div id="orderCode" class="order-code"></div>
             <div id="invoiceDetails">
-                <!-- Nội dung chi tiết hóa đơn sẽ được thêm vào đây -->
+                <!-- Content -->
             </div>
             <div class="total-amount" id="totalAmount">Tổng cộng: </div>
         </div>
         
-        <!-- Nút trở về Trang Chủ bên ngoài hóa đơn -->
         <div class="back-button-container">
             <a href="/homepage.html" class="btn btn-primary">Trở về Trang Chủ</a>
         </div>
@@ -31,12 +30,11 @@
 
         function loadInvoice() {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderCode = urlParams.get('orderCode'); // Lấy orderCode từ URL
+            const orderCode = urlParams.get('orderCode'); 
 
             const invoiceDetails = document.getElementById('invoiceDetails');
             let detailsHtml = ``;
 
-            // Gọi API theo orderCode
             fetch(`http://localhost:5000/api/orders/${orderCode}`, {
                 method: 'GET',
                 headers: {
@@ -48,10 +46,8 @@
             .then(order => {
                 let totalAmount = 0;
 
-                // Hiển thị mã đơn hàng ở góc phải
                 document.getElementById('orderCode').innerText = `Mã đơn hàng: ${order.orderCode}`;
 
-                // Thông tin người dùng và giao hàng từ dữ liệu người dùng nhập
                 detailsHtml += `
                     <div class="invoice-section"><span class="invoice-label">Họ và tên:</span> <span>${order.fullName}</span></div>
                     <div class="invoice-section"><span class="invoice-label">Số điện thoại:</span> <span>${order.phoneNumber}</span></div>

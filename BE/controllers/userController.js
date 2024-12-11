@@ -1,23 +1,17 @@
-// controllers/userController.js
-
 const User = require('../models/User');
 const Address = require('../models/Address');
 
-// Show profile of the logged-in user
 exports.getUserProfile = async (req, res) => {
   try {
-    // Find the user by ID (without password) and populate their addresses
     const user = await User.findById(req.user.id).select('-password');
     const addresses = await Address.find({ user: req.user.id });
 
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ msg: 'Không tìm thấy người dùng' });
     }
-
-    // Return the user profile with associated addresses
     res.json({
       user,
-      addresses,  // Including addresses in the response
+      addresses, 
     });
   } catch (err) {
     console.error(err.message);
@@ -25,7 +19,6 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin của user đang đăng nhập
 exports.updateUserProfile = async (req, res) => {
     const { fullName, phoneNumber, dateOfBirth } = req.body;
 

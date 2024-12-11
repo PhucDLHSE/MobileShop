@@ -3,13 +3,13 @@ const router = express.Router();
 const addressController = require('../controllers/addressController');
 const auth = require('../middleware/auth');
 
-// Thêm Address mới
+// Set API thêm địa chỉ mới
 router.post('/', auth, addressController.createAddress);
 
-// Lấy tất cả Address của một User
+// Lấy tất cả Địa chỉ của một User
 router.get('/', auth, addressController.getAddresses);
 
-// Xóa Address
+// Xóa Địa chỉ
 router.delete('/:id', auth, addressController.deleteAddress);
 
 //Cập nhật địa chỉ Mặc định
