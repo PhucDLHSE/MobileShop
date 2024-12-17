@@ -75,8 +75,7 @@ npm install
 
 #### Clone repository
 ```bash
-https://github.com/https://github.com/PhucDLHSE/MobileShop.git
-cd your-project-folder
+https://github.com/PhucDLHSE/MobileShop.git
 ```
 
 #### Cài đặt các thư viện
