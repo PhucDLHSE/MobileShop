@@ -1,4 +1,3 @@
-// routes/orderRoutes.js
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
@@ -13,7 +12,7 @@ router.get('/user', auth, getOrdersByUserId);
 
 router.get('/:orderCode', getOrderByCode);
 
-router.put('/:orderCode/status', auth, adminAuth, updateOrderStatus);
+router.put('/:orderCode/status', auth, updateOrderStatus);
 
 router.delete('/:orderCode', auth, adminAuth, deleteOrder);
 

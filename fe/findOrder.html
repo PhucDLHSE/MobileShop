@@ -6,13 +6,61 @@
     <title>Đơn hàng của bạn</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/findOrder.css" rel="stylesheet">
+    <style>
+        .order-card {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+        .order-card:hover {
+            transform: scale(1.02);
+        }
+        .status-badge {
+            font-weight: bold;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #fff;
+        }
+        .status-confirmed {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+        .status-shipped {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .status-completed {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .status-canceled {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .order-footer {
+            font-size: 14px;
+            text-align: right;
+        }
+    </style>
 </head>
-<body>
-    <!-- Nút Trở về Trang chủ -->
-    <button id="backToHome" onclick="goToHomePage()">Trở về Trang chủ</button>
 
-    <div class="container">
-        <h1 class="text-center mb-4">Đơn hàng</h1>
+<body>
+
+    <!-- Nút trở về trang chủ -->
+    <button id="backToHome" class="btn btn-primary mt-3" onclick="goToHomePage()">Trở về Trang chủ</button>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Danh sách Đơn hàng</h1>
 
         <!-- Placeholder for Orders -->
         <div id="ordersList"></div>
@@ -24,61 +72,66 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
-        alert("Vui lòng đăng nhập để xem danh sách đơn hàng!");
-        window.location.href = "login.html";
-        return;
-    }
+            const authToken = localStorage.getItem('authToken');
 
-    try {
-        const response = await fetch('http://localhost:5000/api/orders/user', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': authToken 
+            if (!authToken) {
+                alert("Vui lòng đăng nhập để xem danh sách đơn hàng!");
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/orders/user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': authToken
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Không thể tải danh sách đơn hàng");
+                }
+
+                const result = await response.json();
+
+                if (result.orders && result.orders.length > 0) {
+                    displayOrders(result.orders);
+                } else {
+                    document.getElementById('ordersList').innerHTML = "<h4 class='text-center'>Không tìm thấy đơn hàng nào</h4>";
+                }
+            } catch (error) {
+                console.error("Lỗi khi lấy đơn hàng:", error.message);
+                alert("Đã xảy ra lỗi khi tải danh sách đơn hàng!");
             }
         });
 
-        if (!response.ok) {
-            throw new Error("Không thể tải danh sách đơn hàng");
-        }
-
-        const orders = await response.json();
-        displayOrders(orders);
-    } catch (error) {
-        console.error("Lỗi khi lấy đơn hàng:", error.message);
-        alert("Đã xảy ra lỗi khi tải đơn hàng!");
-    }
-});
-
-
         function displayOrders(orders) {
             const ordersList = document.getElementById("ordersList");
-            if (orders.length === 0) {
-                ordersList.innerHTML = "<h4 class='text-center'>Không có đơn hàng nào</h4>";
-                return;
-            }
 
             orders.forEach(order => {
                 const orderCard = document.createElement("div");
                 orderCard.classList.add("card", "order-card");
 
-                // Hiển thị thông tin cơ bản của đơn hàng
                 orderCard.innerHTML = `
-                    <div class="card-header">
-                        Mã đơn hàng: ${order.orderCode} 
-                        <span class="badge badge-info badge-status float-right">${order.status}</span>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><strong>Mã đơn hàng:</strong> ${order.orderCode}</span>
+                        <span class="badge status-badge ${getStatusClass(order.status)}">${getStatusText(order.status)}</span>
                     </div>
+
                     <div class="card-body">
                         <p><strong>Người nhận:</strong> ${order.fullName}</p>
                         <p><strong>Số điện thoại:</strong> ${order.phoneNumber}</p>
                         <p><strong>Địa chỉ:</strong> ${order.address}</p>
                         <p><strong>Ghi chú:</strong> ${order.notes || "Không có ghi chú"}</p>
                         <p><strong>Tổng tiền:</strong> ${order.totalAmount.toLocaleString('vi-VN')} VNĐ</p>
-                        <h6>Sản phẩm:</h6>
+
+                        <h6><strong>Sản phẩm:</strong></h6>
                         ${displayOrderItems(order.items)}
-                        <p class="text-muted text-right mb-0"><em>Ngày đặt hàng: ${new Date(order.createdAt).toLocaleDateString()}</em></p>
+
+                        <div class="order-footer">
+                            <p><strong>Ngày đặt hàng:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+                        </div>
                     </div>
                 `;
 
@@ -88,8 +141,8 @@
 
         function displayOrderItems(items) {
             return items.map(item => `
-                <div class="d-flex align-items-center mb-2">
-                    <img src="${item.product.images[0] || 'placeholder.jpg'}" alt="Product" class="product-image">
+                <div class="d-flex align-items-center mt-2">
+                    <img src="${item.product.images[0] || 'placeholder.jpg'}" class="product-image" alt="Product">
                     <div class="product-details">
                         <p class="mb-0"><strong>${item.product.name}</strong></p>
                         <p class="mb-0">Số lượng: ${item.quantity}</p>
@@ -98,6 +151,41 @@
                 </div>
             `).join("");
         }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'status-pending';
+                case 'Confirmed':
+                    return 'status-confirmed';
+                case 'Shipped':
+                    return 'status-shipped';
+                case 'Completed':
+                    return 'status-completed';
+                case 'Canceled':
+                    return 'status-canceled';
+                default:
+                    return 'badge-info';
+            }
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'Đang chờ xác nhận';
+                case 'Confirmed':
+                    return 'Đã xác nhận';
+                case 'Shipped':
+                    return 'Đã giao hàng';
+                case 'Completed':
+                    return 'Hoàn tất';
+                case 'Canceled':
+                    return 'Đã hủy';
+                default:
+                    return status;
+            }
+        }
     </script>
+
 </body>
 </html>

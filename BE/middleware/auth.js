@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
   const token = req.header('x-auth-token');
-  console.log("Token được truyền:", token); 
   if (!token) {
     return res.status(401).json({ msg: 'Không thể xác thực' });
   }
@@ -10,7 +9,6 @@ module.exports = function (req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded.user;
-    console.log("User từ token:", decoded.user);
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token không hợp lệ' });
