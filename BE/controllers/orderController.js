@@ -1,4 +1,3 @@
-// controllers/orderController.js
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 
@@ -32,7 +31,7 @@ async function getUniqueOrderCode() {
 
 exports.createOrder = async (req, res) => {
     try {
-        const { fullName, phoneNumber, paymentMethod, city, district, ward, notes } = req.body;
+        const { fullName, phoneNumber, paymentMethod, city, district, ward, notes, status } = req.body;
         const userId = req.user.id;
         const orderCode = await getUniqueOrderCode();
 
@@ -64,7 +63,8 @@ exports.createOrder = async (req, res) => {
             })),
             paymentMethod,
             totalAmount,
-            notes
+            notes, 
+            status: status || 'pending'
         });
 
         await order.save();
@@ -76,6 +76,46 @@ exports.createOrder = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
+    }
+};
+
+exports.updateOrderStatus = async (req, res) => {
+    try {
+        const { orderCode } = req.params; 
+        const { status } = req.body;      
+        const allowedStatuses = ["pending", "confirmed", "shipping", "completed", "cancelled"];
+
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "Status không hợp lệ (pending, confirmed, shipping, completed, cancelled)"
+            });
+        }
+
+        const order = await Order.findOne({ orderCode });
+        if (!order) {
+            return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+        }
+
+        // Kiểm tra thứ tự trạng thái
+        const currentStatusIndex = allowedStatuses.indexOf(order.status); 
+        const newStatusIndex = allowedStatuses.indexOf(status);          
+
+        if (newStatusIndex < currentStatusIndex) {
+            return res.status(400).json({
+                message: `Không thể cập nhật từ trạng thái '${order.status}' quay lại '${status}'`
+            });
+        }
+
+        order.status = status;
+        await order.save();
+
+        res.status(200).json({
+            message: `Trạng thái đơn hàng đã được cập nhật thành: ${status}`,
+            order: order
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
@@ -97,6 +137,7 @@ exports.getAllOrders = async (req, res) => {
             notes: order.notes || 'Không có ghi chú',
             orderCode: order.orderCode,
             items: order.items,
+            status: order.status,
             totalAmount: order.totalAmount,
             createdAt: order.createdAt
         }));
@@ -130,11 +171,38 @@ exports.getOrderByCode = async (req, res) => {
             paymentMethod: order.paymentMethod,
             notes: order.notes || 'Không có ghi chú',
             orderCode: order.orderCode,
+            status: order.status,
             items: order.items,
             totalAmount: order.totalAmount
         });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
+    }
+};
+
+exports.deleteOrder = async (req, res) => {
+    try {
+        const { orderCode } = req.params;
+        const order = await Order.findOne({ orderCode });
+
+        if (!order) {
+            return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+        }
+
+        if (order.status !== "cancelled") {
+            return res.status(400).json({
+                message: "Chỉ có thể xóa đơn hàng có trạng thái 'cancelled'"
+            });
+        }
+        
+        await Order.deleteOne({ orderCode });
+
+        res.status(200).json({
+            message: `Đơn hàng có mã '${orderCode}' đã được xóa thành công`
+        });
+    } catch (error) {
+        console.error("Lỗi xóa đơn hàng:", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
