@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getUserProfile, updateUserProfile, getUserById, getAllUsers, deleteUser, updateUserById } = require('../controllers/userController');
-const auth = require('../middleware/auth'); // Correct path for auth middleware
+const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
 
 //User: Lấy và cập nhật thông tin cá nhân

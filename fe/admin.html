@@ -16,6 +16,7 @@
         <a href="#" data-page="product.html">Sản phẩm</a>
         <a href="#" data-page="category.html">Danh mục</a>
         <a href="#" data-page="brand.html">Thương hiệu</a>
+        <a href="#" data-page="order.html">Đơn hàng</a>
         <a href="#" data-page="user.html">Người dùng</a>
     </div>
 
@@ -46,19 +47,15 @@
             link.addEventListener('click', function (e) {
                 e.preventDefault();
 
-                // Xóa class active khỏi các link
                 document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
 
-                // Thêm class active vào link được click
                 this.classList.add('active');
 
-                // Load trang mới
                 const page = this.getAttribute('data-page');
                 document.getElementById('contentFrame').src = page;
             });
         });
 
-        // Hàm Logout
         function logout() {
             alert("Bạn đã đăng xuất thành công!");
             window.location.href = 'login.html';

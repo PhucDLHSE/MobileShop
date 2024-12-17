@@ -120,6 +120,31 @@ exports.updateOrderStatus = async (req, res) => {
 };
 
 
+exports.getOrdersByUserId = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        console.log('User ID:', userId);  // ✅ In User ID
+
+        const orders = await Order.find({ user: userId }).populate({
+            path: 'items.product',
+            select: 'name price images'
+        });
+
+        console.log('Đơn hàng:', JSON.stringify(orders, null, 2));  // ✅ In dữ liệu đơn hàng
+
+        if (!orders.length) {
+            return res.status(404).json({ msg: 'Không tìm thấy đơn hàng nào.' });
+        }
+
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error('Lỗi server:', error.message);
+        res.status(500).json({ msg: 'Server error', error });
+    }
+};
+
+
+
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find()
@@ -128,7 +153,6 @@ exports.getAllOrders = async (req, res) => {
                 select: 'name price images'
             });
 
-        // Tạo danh sách đơn hàng với các thông tin người dùng đã nhập
         const orderData = orders.map(order => ({
             fullName: order.fullName,
             phoneNumber: order.phoneNumber,

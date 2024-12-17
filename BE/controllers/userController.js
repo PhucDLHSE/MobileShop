@@ -28,7 +28,6 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ msg: 'Người dùng không tồn tại' });
         }
 
-        // Cập nhật thông tin
         user.fullName = fullName || user.fullName;
         user.phoneNumber = phoneNumber || user.phoneNumber;
         user.dateOfBirth = dateOfBirth || user.dateOfBirth;
