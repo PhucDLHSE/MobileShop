@@ -6,21 +6,50 @@ body {
     margin-top: 30px;
 }
 .order-card {
-    margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    padding: 20px;
+}
+.order-card:hover {
+    transform: scale(1.02);
 }
 .order-card .card-header {
-    background-color: #007bff;
+    background-color: #7289a1;
     color: #fff;
     font-weight: bold;
 }
-.order-card .card-body {
+.card-body {
     padding: 20px;
 }
-.badge-status {
-    font-size: 14px;
+.status-badge {
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 16px;
 }
+.status-pending {
+    background-color: #ffc107;
+    color: #fff;
+}
+.status-confirmed {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.status-completed {
+    background-color: #28a745;
+    color: #fff;
+}
+.status-shipping {
+    background-color: #007bff;
+    color: #fff;
+}
+.status-canceled {
+    background-color: #dc3545;
+    color: #fff;
+}
+
 .product-details {
     margin-left: 10px;
 }
@@ -29,6 +58,10 @@ body {
     height: 70px;
     object-fit: cover;
     border-radius: 5px;
+}
+.order-footer {
+    font-size: 14px;
+    text-align: right;
 }
 #backToHome {
     position: fixed;

@@ -6,52 +6,6 @@
     <title>Đơn hàng của bạn</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/findOrder.css" rel="stylesheet">
-    <style>
-        .order-card {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
-        }
-        .order-card:hover {
-            transform: scale(1.02);
-        }
-        .status-badge {
-            font-weight: bold;
-            padding: 5px 10px;
-            font-size: 16px;
-        }
-        .status-pending {
-            background-color: #ffc107;
-            color: #fff;
-        }
-        .status-confirmed {
-            background-color: #17a2b8;
-            color: #fff;
-        }
-        .status-shipped {
-            background-color: #28a745;
-            color: #fff;
-        }
-        .status-completed {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .status-canceled {
-            background-color: #dc3545;
-            color: #fff;
-        }
-        .product-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-        .order-footer {
-            font-size: 14px;
-            text-align: right;
-        }
-    </style>
 </head>
 
 <body>
@@ -125,7 +79,10 @@
                         <p><strong>Địa chỉ:</strong> ${order.address}</p>
                         <p><strong>Ghi chú:</strong> ${order.notes || "Không có ghi chú"}</p>
                         <p><strong>Tổng tiền:</strong> ${order.totalAmount.toLocaleString('vi-VN')} VNĐ</p>
-
+                        <p><strong>Phương thức thanh toán:</strong> 
+                                ${order.paymentMethod === 'bank_transfer' ? 'Chuyển khoản ngân hàng' : 
+                                order.paymentMethod === 'cash_on_delivery' ? 'Thanh toán khi nhận hàng' : order.paymentMethod}
+                        </p>
                         <h6><strong>Sản phẩm:</strong></h6>
                         ${displayOrderItems(order.items)}
 
@@ -154,15 +111,15 @@
 
         function getStatusClass(status) {
             switch (status) {
-                case 'Pending':
+                case 'pending':
                     return 'status-pending';
-                case 'Confirmed':
+                case 'confirmed':
                     return 'status-confirmed';
-                case 'Shipped':
-                    return 'status-shipped';
-                case 'Completed':
+                case 'shipping':
+                    return 'status-shipping';
+                case 'completed':
                     return 'status-completed';
-                case 'Canceled':
+                case 'canceled':
                     return 'status-canceled';
                 default:
                     return 'badge-info';
@@ -171,15 +128,15 @@
 
         function getStatusText(status) {
             switch (status) {
-                case 'Pending':
+                case 'pending':
                     return 'Đang chờ xác nhận';
-                case 'Confirmed':
+                case 'confirmed':
                     return 'Đã xác nhận';
-                case 'Shipped':
-                    return 'Đã giao hàng';
-                case 'Completed':
+                case 'shipping':
+                    return 'Đang giao hàng';
+                case 'completed':
                     return 'Hoàn tất';
-                case 'Canceled':
+                case 'canceled':
                     return 'Đã hủy';
                 default:
                     return status;

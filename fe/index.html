@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Shop</title>
     <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body style="background: url('images/Christmast.jpg') no-repeat center/cover fixed;">
     <div class="top-bar bg-primary text-white py-1">
         <div class="container d-flex justify-content-between">
             <div class="top-links">
@@ -78,13 +79,10 @@
             <div class="left-menu">
                 <div class="btn-group-vertical w-100" role="group">
                     <div class="btn-group dropend">
-                        <button type="button" class="btn btn-light dropdown-toggle w-100" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <button type="button" class="btn btn-light dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
                             Điện thoại, Tablet
                         </button>
-                        <ul class="dropdown-menu" id="categorySidebar">
-                            <!-- Các danh mục sẽ được tải động từ API -->
-                        </ul>
+                        <ul class="dropdown-menu" id="categorySidebar"></ul>
                     </div>
                     <button type="button" class="btn btn-light w-100">Laptop</button>
                     <button type="button" class="btn btn-light w-100">Âm thanh</button>
@@ -140,6 +138,9 @@
                     <div class="bottom-image mt-2">
                         <img src="images/b2s-update-19-06 (1).gif" class="d-block w-100" alt="...">
                     </div>
+                    <div class="bottom-image mt-2">
+                        <img src="images/cate-sim.webp" class="d-block w-100" alt="...">
+                    </div>
                 </div>
             </div>
 
@@ -178,6 +179,19 @@
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script> -->
+    <!-- Carousel Control -->
+    <script>
+        var myCarousel = document.querySelector('#carouselExampleIndicators');
+        var carousel = new bootstrap.Carousel(myCarousel, {
+            interval: 2000, // Thời gian chuyển slide (ms)
+            wrap: true,     // Quay lại slide đầu khi hết
+            pause: 'hover'  // Tạm dừng khi di chuột
+        });
+    </script>
+    
+    <script src="js/snow.js"></script>
 
     <!-- Tất cả sản phẩm -->
     <script>

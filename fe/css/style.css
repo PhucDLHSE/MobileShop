@@ -1,7 +1,26 @@
 body {
     font-family: Arial, sans-serif;
     font-size: 13px;
-    background-color: rgb(225 227 255)
+    background-color: rgb(225 227 255);
+}
+
+/* Lớp chứa hiệu ứng tuyết */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: #fff;
+    font-size: 1em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    animation: fall linear infinite;
+}
+
+/* Tạo hiệu ứng rơi */
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
 }
 
 .main-header {
