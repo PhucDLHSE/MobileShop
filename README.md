@@ -21,7 +21,7 @@ Dự án này là hệ thống quản lý cho một trang thương mại điện
   - Hiển thị danh sách tài khoản.
   - **Quản lý đơn hàng**:
   - Xem, cập nhật trạng thái đơn hàng.
-  - Hiển thị danh sách tất cả đơn hàng.  
+  - Quản lý danh sách tất cả đơn hàng.  
 - **Dashboard**:
   - Hiển thị báo cáo doanh thu từng tháng.
   - Hiển thị biểu đồ loại sản phẩm bán chạy.
@@ -49,8 +49,8 @@ Dự án này là hệ thống quản lý cho một trang thương mại điện
 ## Công nghệ sử dụng
 - **Frontend**:
   - HTML, CSS, JavaScript.
-  - Thư viện Bootstrap (4.5.2) để thiết kế giao diện.
-  - Thư viện Font Awesome và Flaticon cho icon.
+  - Thư viện Bootstrap (v5.0) để thiết kế giao diện.
+  - Thư viện Font Awesome cho icon.
 - **Backend**:
   - Node.js với Express.js để xử lý API.
   - MongoDB làm cơ sở dữ liệu.
