@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-// Import Routes
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/category');
 const brandRoutes = require('./routes/brand');
@@ -14,7 +13,6 @@ const addressRoutes = require('./routes/address');
 const userRoutes = require('./routes/user');
 const orderRoutes = require('./routes/order');
 
-// Load environment variables
 dotenv.config({ path: './BE/.env' });
 
 // Connect to Database
@@ -37,10 +35,8 @@ app.use('/api/addresses', addressRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 
-// File tĩnh bên font-end
 app.use(express.static(path.join(__dirname, '../fe')));
 
-// Kết nối với trang homepage bên font-end
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../fe/index.html'));
 });

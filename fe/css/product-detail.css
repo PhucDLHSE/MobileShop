@@ -3,7 +3,7 @@ body {
 }
 
 .container {
-    max-width: 1200px; /* Tăng chiều rộng container để có không gian cho carousel */
+    max-width: 1200px; 
 }
 
 h3 {
@@ -37,7 +37,6 @@ img {
     width: 100%;
 }
 
-/* CSS cho Carousel */
 .carousel {
     border: 2px solid #007bff;
     border-radius: 10px;
@@ -45,25 +44,24 @@ img {
     background-color: #ffffff;
     overflow: hidden;
     margin-bottom: 20px;
-    width: 100%; /* Đặt chiều rộng carousel tự động theo hình ảnh */
-    height: auto; /* Chiều cao tự động dựa trên hình ảnh */
-    display: flex; /* Đảm bảo các mục con bên trong được căn giữa */
+    width: 100%; 
+    height: auto;
     justify-content: center;
 }
 
 .carousel-item img {
     border-radius: 10px;
-    width: 100%; /* Chiều rộng hình ảnh bằng 100% carousel */
-    height: auto; /* Chiều cao tự động, để hình ảnh không bị méo */
-    object-fit: contain; /* Đảm bảo hình ảnh vừa vặn với khung chứa mà không bị cắt */
-    display: block; /* Hiển thị block để không dư thừa */
+    width: 100%; 
+    height: auto; 
+    object-fit: contain; 
+    display: block; 
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: #007bff; /* Màu nền cho biểu tượng mũi tên */
-    border-radius: 50%; /* Mũi tên bo tròn */
-    padding: 10px; /* Tăng kích thước mũi tên */
+    background-color: #007bff; 
+    border-radius: 50%; 
+    padding: 10px; 
 }
 
 .divider {

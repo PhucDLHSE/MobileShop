@@ -1,35 +1,33 @@
 
 .container {
-    max-width: 90%; /* Tăng tối đa không gian cho nội dung */
-    margin: auto; /* Căn giữa nội dung */
-    padding: 20px; /* Tạo khoảng cách đều xung quanh */
+    max-width: 90%; 
+    margin: auto; 
+    padding: 20px; 
 }
 
-/* Bảng sản phẩm */
 table {
-    table-layout: fixed; /* Cố định bố cục bảng */
-    word-wrap: break-word; /* Tự động xuống dòng nếu nội dung dài */
-    margin-top: 10px; /* Tạo khoảng cách phía trên bảng */
+    table-layout: fixed;
+    word-wrap: break-word; 
+    margin-top: 10px;
 }
 
 #productTableContainer {
-    max-height: 600px; /* Giới hạn chiều cao bảng */
-    overflow-y: auto; /* Chỉ cho phép cuộn dọc */
-    margin-top: 20px; /* Khoảng cách giữa tiêu đề và bảng */
-    border: 1px solid #dee2e6; /* Viền xung quanh bảng */
-    border-radius: 5px; /* Làm tròn góc bảng */
-    padding: 10px; /* Tạo khoảng cách bên trong bảng */
-    background-color: #ffffff; /* Nền trắng của bảng */
+    max-height: 600px; 
+    overflow-y: auto; 
+    margin-top: 20px; 
+    border: 1px solid #dee2e6; 
+    border-radius: 5px; 
+    padding: 10px; 
+    background-color: #ffffff; 
 }
 
 /* Modal */
 #productModal .modal-dialog {
-    max-width: 500px; /* Giới hạn chiều rộng modal */
+    max-width: 500px; 
     min-height: 100%;
-    margin: auto; /* Căn giữa modal */
+    margin: auto;
 }
 
-/* Nút thêm sản phẩm */
 button#createProductBtn {
-    margin-bottom: 15px; /* Khoảng cách giữa nút và bảng */
+    margin-bottom: 15px; 
 }

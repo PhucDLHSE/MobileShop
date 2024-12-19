@@ -296,14 +296,14 @@ body {
 .cart-total {
     font-size: 18px;
     font-weight: bold;
-    color: #ff0000; /* Màu đỏ để làm nổi bật */
-    border-top: 2px solid #000; /* Đường kẻ trên */
-    padding-top: 10px; /* Khoảng cách từ nội dung trước */
+    color: #ff0000; 
+    border-top: 2px solid #000; 
+    padding-top: 10px; 
 }
 
 #search-dropdown {
-    max-height: none;  /* Giới hạn chiều cao hợp lý */
-    width: none;  /* Mở rộng chiều rộng của dropdown */
+    max-height: none;  
+    width: none; 
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -312,7 +312,7 @@ body {
     z-index: 1050;
     position: absolute;
     left: 0;
-    transform: translateX(100%);  /* Dịch trái để mở rộng hơn thanh tìm kiếm */
+    transform: translateX(100%); 
 }
 #search-dropdown .dropdown-item {
     display: flex;

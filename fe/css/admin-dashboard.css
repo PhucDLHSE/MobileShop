@@ -12,13 +12,13 @@ body {
     min-height: 100vh;
     margin-left: -15rem;
     transition: margin 0.25s ease-out;
-    background-color: #f8f9fa; /* Thay đổi màu nền */
+    background-color: #f8f9fa; 
 }
 
 #sidebar-wrapper .sidebar-heading {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;
-    color: #343a40; /* Màu chữ */
+    color: #343a40; 
 }
 
 #sidebar-wrapper .list-group {
@@ -28,9 +28,9 @@ body {
 #sidebar-wrapper .list-group-item {
     padding: 0.75rem 1.25rem;
     font-size: 1rem;
-    color: #343a40; /* Màu chữ */
-    background-color: #f8f9fa; /* Màu nền */
-    border: none; /* Không có đường viền */
+    color: #343a40; 
+    background-color: #f8f9fa; 
+    border: none; 
 }
 
 #sidebar-wrapper .list-group-item:hover {
@@ -43,7 +43,7 @@ body {
     background-color: #e9ecef;
     color: #007bff;
     font-weight: bold;
-    border-left: 3px solid #007bff; /* Thêm đường viền bên trái */
+    border-left: 3px solid #007bff; 
 }
 
 #page-content-wrapper {
