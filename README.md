@@ -16,10 +16,10 @@ Dự án này là hệ thống quản lý cho một trang thương mại điện
 - **Quản lý thương hiệu**:
   - Tạo, chỉnh sửa, xóa thương hiệu.
   - Hiển thị danh sách thương hiệu.
-  - **Quản lý người dùng**:
+- **Quản lý người dùng**:
   - Tạo, chỉnh sửa, xóa tài khoản.
   - Hiển thị danh sách tài khoản.
-  - **Quản lý đơn hàng**:
+- **Quản lý đơn hàng**:
   - Xem, cập nhật trạng thái đơn hàng.
   - Quản lý danh sách tất cả đơn hàng.  
 - **Dashboard**:
@@ -41,7 +41,7 @@ Dự án này là hệ thống quản lý cho một trang thương mại điện
   - Thêm sản phẩm vào giỏ hàng và tương tác với giỏ hàng.
 - **Tìm kiếm sản phẩm**:
   - Người dùng có thể tìm kiếm sản phẩm muốn mua bằng cách nhập trên thanh tìm kiếm.
-- **Thanh toán**:
+- **Đặt hàng**:
   - Kiểm tra lại thông tin đặt hàng.
   - Chọn địa chỉ giao hàng và phương thức thanh toán.
   - Xem hóa đơn sau khi đặt hàng thành công.
