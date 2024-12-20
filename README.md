@@ -64,7 +64,11 @@ Dự án này là hệ thống quản lý cho một trang thương mại điện
 - Postman Agent (https://www.postman.com/downloads)
 
 ### 2. Cài đặt dự án
-```bash 
+```bash
+Cài đặt chung
+npm install -g nodemon
+npm install -g http-server
+
 Cài đặt phần Backend
 cd BE
 npm install
