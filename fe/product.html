@@ -15,7 +15,7 @@
             <table class="table table-striped" id="productTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Hình ảnh</th>
                         <th>Tên</th>
                         <th>Danh mục</th>
                         <th>Thương hiệu</th>
@@ -112,9 +112,10 @@
                 tableBody.innerHTML = '';
 
                 products.forEach(product => {
+                    const imageUrl = product.images && product.images.length > 0 ? product.images[0] : 'default_image_url.jpg';
                     const row = `
                         <tr>
-                            <td>${product._id}</td>
+                            <td><img src="${imageUrl}" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover;"></td>
                             <td>${product.name}</td>
                             <td>${product.category?.name || 'N/A'}</td>
                             <td>${product.brand?.name || 'N/A'}</td>

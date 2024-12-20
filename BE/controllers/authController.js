@@ -37,6 +37,11 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: 'Email hoặc mật khẩu không chính xác' });
     }
+
+    if (user.isBlocked) {
+      return res.status(403).json({ msg: 'Tài khoản này đã bị chặn' });
+    }
+
     if (password !== user.password) {
       return res.status(400).json({ msg: 'Sai mật khẩu' });
     }
